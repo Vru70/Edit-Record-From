@@ -1,11 +1,9 @@
 public with sharing class getRecordDataList 
 {
     @AuraEnabled (cacheable=true)
-    public static String getSObjectRecords(String SFDCobjectApiName, String fieldSetName)
+    public static List<String> getSObjectRecords(String SFDCobjectApiName, String fieldSetName)
     {
-        System.debug('SFDCobjectApiName '+SFDCobjectApiName);
-        System.debug('fieldSetName '+fieldSetName);
-        String fields='';     
+        List<String> fields = new List<String>();     
         if(!String.isEmpty(SFDCobjectApiName) && !String.isEmpty(fieldSetName))
         {
             //get fields from FieldSet
@@ -14,11 +12,11 @@ public with sharing class getRecordDataList
             List<Schema.FieldSetMember> lstFSMember = 
             sObj.getSObjectType().getDescribe().fieldSets.getMap().get(fieldSetName).getFields(); // Collecting all fields from fildSet
                 
-            for(Schema.FieldSetMember f : lstFSMember) //Use of Schema.FieldSetMember to get the fields from Field Set.
+            for(Schema.FieldSetMember f : lstFSMember) 
             {
-                fields += f.getFieldPath() + ', '; // getFieldPath() of FieldSetMember gives the fieldAPI
+                fields.add(String.valueOf(f)); 
             }
-            System.debug('fields '+fields);  
+
             return fields;
         }
         return null;
