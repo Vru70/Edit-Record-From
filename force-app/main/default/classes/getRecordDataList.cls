@@ -14,7 +14,7 @@ public with sharing class getRecordDataList
                 
             for(Schema.FieldSetMember f : lstFSMember) 
             {
-                fields.add(String.valueOf(f)); 
+                fields.add(String.valueOf(f.getFieldPath())); 
             }
 
             return fields;
