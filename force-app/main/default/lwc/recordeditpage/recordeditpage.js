@@ -6,24 +6,25 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class Recordeditpage extends LightningElement
 {
-    @api recordId; // collectes record Id 
+    @api recordId;              // collectes record Id 
 
-    @api SFDCobjectApiName; // collect Object API name
-    @api fieldSetName; // set fieldset name 
+    @api SFDCobjectApiName;     //  Object API Name eg. Account , Contact
+    @api fieldSetName;          //  Name of FieldSet
 
-    @track fieldnames;
-    @track flagChanged = false;
-    error;
-    // Tost variable
-    variant = '';
-    title = '';
-    message = '';
+    @track fieldnames;          // List of Field from FieldSet
+    @track flagChanged = false; // flag for Input value changes
+    @track error;               // Collected error from backend
+    @track data;                // Collected data from backend
 
-    //loader
-    @track loaded = true;
+    @track variant = '';        // Toast variant
+    @track title = '';          // Toast title
+    @track message = '';        // Toast message
 
-    connectedCallback()
-    {
+    @track loaded = true;       // Loader Flag
+
+    fieldName;
+
+    connectedCallback() {
         getSObjectRecords({
             SFDCobjectApiName: this.SFDCobjectApiName,
             fieldSetName: this.fieldSetName
@@ -61,6 +62,7 @@ export default class Recordeditpage extends LightningElement
     {
         if (this.flagChanged)
         {
+            this.fieldName = event.target.fieldName;
             this.flagChanged = false;
             //console.log('fieldName :' + JSON.stringify(event.target.fieldName) + ' Value: ' + JSON.stringify(event.target.value));
             setSObjectRecords({
@@ -69,24 +71,38 @@ export default class Recordeditpage extends LightningElement
                 recordId: this.recordId,
                 SFDCobjectApiName: this.SFDCobjectApiName
             })
-            .then((data) => {
-                console.log('data aftr saving : ', data);
-                if (data === 'Success')
-                {
-                    this.variant = 'success';
-                    this.message = JSON.stringify(fieldValue) +' Saved Successfully';
-                    this.title = 'Success';
-                    this.dispatchEvent(
-                        new ShowToastEvent({
-                            title: this.title,
-                            message: this.message,
-                            variant: this.variant,
-                        }),
-                    );
-                } else
-                {
+                .then((data) => {
+                    console.log('data aftr saving : ', data);
+                    if (data === 'Success')
+                    {
+                        this.variant = 'success';
+                        this.message = JSON.stringify(this.fieldName) + ' Saved Successfully';
+                        this.title = 'Success';
+                        this.dispatchEvent(
+                            new ShowToastEvent({
+                                title: this.title,
+                                message: this.message,
+                                variant: this.variant,
+                            }),
+                        );
+                    } else
+                    {
+                        this.variant = 'error';
+                        this.message = '' + JSON.stringify(data);
+                        this.title = 'Error in Saving SObject Record';
+                        this.dispatchEvent(
+                            new ShowToastEvent({
+                                title: this.title,
+                                message: this.message,
+                                variant: this.variant,
+                            }),
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.log('error in saving', error);
                     this.variant = 'error';
-                    this.message = '' + JSON.stringify(data);
+                    this.message = '' + JSON.stringify(error);
                     this.title = 'Error in Saving SObject Record';
                     this.dispatchEvent(
                         new ShowToastEvent({
@@ -95,23 +111,7 @@ export default class Recordeditpage extends LightningElement
                             variant: this.variant,
                         }),
                     );
-                }
-                
-            })
-            .catch(error => {
-                this.variant = 'error';
-                this.message = '' + JSON.stringify(error);
-                this.title = 'Error in Saving SObject Record';
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: this.title,
-                        message: this.message,
-                        variant: this.variant,
-                    }),
-                );
-                console.log('error in saving', error);
-            })
+                })
         }
     }
-
 }
