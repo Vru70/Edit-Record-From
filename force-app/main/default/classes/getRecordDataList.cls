@@ -27,6 +27,10 @@ public with sharing class getRecordDataList
     {
         if(!String.isEmpty(fieldName) && !String.isEmpty(recordId) && !String.isEmpty(SFDCobjectApiName))
         {
+            System.debug('fieldName: ' + fieldName);
+            System.debug('fieldValue: ' + fieldValue);
+            System.debug('recordId: ' + recordId);
+            System.debug('SFDCobjectApiName: ' + SFDCobjectApiName);
             SObject sObj = (SObject)(Type.forName('Schema.'+ SFDCobjectApiName).newInstance()); //  Create new sObj
             //sObj.Id = recordId;
             sObj.put('Id',recordId); // sObject.put(fieldName,Value)
@@ -34,11 +38,12 @@ public with sharing class getRecordDataList
             try 
             {
                 UPDATE sObj;
+                System.debug(' :Success: ');
                 return 'Success'; 
             } catch(Exception e) 
             {
                 System.debug(e.getMessage());
-                return 'e.getMessage()'; 
+                return ''+e.getMessage(); 
             }
         }
         return 'Fields should not be empty';
