@@ -36,7 +36,13 @@ export default class Recordeditpage extends LightningElement
                 this.variant = 'error';
                 this.message = '' + error;
                 this.title = 'Error in Loading SObject Record';
-                showToast();
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: this.title,
+                        message: this.message,
+                        variant: this.variant,
+                    }),
+                );
                 console.log('error in loading', error);
             })
     }
@@ -66,13 +72,25 @@ export default class Recordeditpage extends LightningElement
                     this.variant = 'success';
                     this.message = 'Saved Successfully';
                     this.title = 'Saved Successfully';
-                    showToast();
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: this.title,
+                            message: this.message,
+                            variant: this.variant,
+                        }),
+                    );
                 } else
                 {
                     this.variant = 'error';
                     this.message = '' + data;
                     this.title = 'Error in Saving SObject Record';
-                    showToast();                        
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: this.title,
+                            message: this.message,
+                            variant: this.variant,
+                        }),
+                    );
                 }
                 
             })
@@ -80,20 +98,16 @@ export default class Recordeditpage extends LightningElement
                 this.variant = 'error';
                 this.message = '' + error;
                 this.title = 'Error in Saving SObject Record';
-                showToast();
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: this.title,
+                        message: this.message,
+                        variant: this.variant,
+                    }),
+                );
                 console.log('error in saving', error);
             })
         }
     }
 
-    showToast()
-    {
-        const evt = new ShowToastEvent({
-            title: this.title,
-            message: this.message,
-            variant: this.variant,
-            mode: 'dismissable'
-        });
-        this.dispatchEvent(evt);
-    }
 }
