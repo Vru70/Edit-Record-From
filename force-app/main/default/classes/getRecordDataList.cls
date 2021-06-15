@@ -27,14 +27,24 @@ public with sharing class getRecordDataList
     {
         if(!String.isEmpty(fieldName) && !String.isEmpty(recordId) && !String.isEmpty(SFDCobjectApiName))
         {
-            System.debug('fieldName: ' + fieldName);
-            System.debug('fieldValue: ' + fieldValue);
-            System.debug('recordId: ' + recordId);
-            System.debug('SFDCobjectApiName: ' + SFDCobjectApiName);
-            SObject sObj = (SObject)(Type.forName('Schema.'+ SFDCobjectApiName).newInstance()); //  Create new sObj
-            //sObj.Id = recordId;
-            sObj.put('Id',recordId); // sObject.put(fieldName,Value)
-            sObj.put(fieldName,fieldValue);
+            SObject sObj = (SObject)(Type.forName('Schema.'+ SFDCobjectApiName).newInstance());     //  Create new sObj
+            
+            Schema.SObjectType objectType = Schema.getGlobalDescribe().get(SFDCobjectApiName);      // Object schema 
+            Map<String, SObjectField> fieldMap = objectType.getDescribe().fields.getMap();          // map to het field
+            Schema.SobjectField theField = fieldMap.get(fieldName);                                 
+            Schema.DisplayType fieldType = theField.getDescribe().getType();                        // Collecting field type
+
+            sObj.put('Id',recordId);                                                                // sObject.put(fieldName,Value)
+
+            if(String.valueOf(fieldType) == 'DATE')
+            {
+                Date dateVAL = Date.valueOf(fieldValue);
+                sObj.put(fieldName,dateVAL);
+            }else 
+            {
+                sObj.put(fieldName,fieldValue);
+            }
+                     
             try 
             {
                 UPDATE sObj;
@@ -46,6 +56,6 @@ public with sharing class getRecordDataList
                 return ''+e.getMessage(); 
             }
         }
-        return 'Fields should not be empty';
+        return 'Something Went Wrong';
     }  
 }
