@@ -19,6 +19,9 @@ export default class Recordeditpage extends LightningElement
     title = '';
     message = '';
 
+    //loader
+    @track loaded = true;
+
     connectedCallback()
     {
         getSObjectRecords({
@@ -29,6 +32,7 @@ export default class Recordeditpage extends LightningElement
 
                 this.fieldnames = data;
                 this.error = undefined;
+                this.loaded = false;
             })
             .catch(error => {
                 this.error = error;
@@ -70,8 +74,8 @@ export default class Recordeditpage extends LightningElement
                 if (data === 'Success')
                 {
                     this.variant = 'success';
-                    this.message = 'Saved Successfully';
-                    this.title = 'Saved Successfully';
+                    this.message = JSON.stringify(fieldValue) +' Saved Successfully';
+                    this.title = 'Success';
                     this.dispatchEvent(
                         new ShowToastEvent({
                             title: this.title,
@@ -82,7 +86,7 @@ export default class Recordeditpage extends LightningElement
                 } else
                 {
                     this.variant = 'error';
-                    this.message = '' + data;
+                    this.message = '' + JSON.stringify(data);
                     this.title = 'Error in Saving SObject Record';
                     this.dispatchEvent(
                         new ShowToastEvent({
@@ -96,7 +100,7 @@ export default class Recordeditpage extends LightningElement
             })
             .catch(error => {
                 this.variant = 'error';
-                this.message = '' + error;
+                this.message = '' + JSON.stringify(error);
                 this.title = 'Error in Saving SObject Record';
                 this.dispatchEvent(
                     new ShowToastEvent({
