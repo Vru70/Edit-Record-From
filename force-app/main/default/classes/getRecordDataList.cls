@@ -22,4 +22,25 @@ public with sharing class getRecordDataList
         return null;
     }  
     
+    @AuraEnabled (cacheable=true)
+    public static String setSObjectRecords(String fieldName, String fieldValue, String recordId, String SFDCobjectApiName)
+    {
+        if(!String.isEmpty(fieldName) && !String.isEmpty(recordId) && !String.isEmpty(SFDCobjectApiName))
+        {
+            SObject sObj = (SObject)(Type.forName('Schema.'+ SFDCobjectApiName).newInstance()); //  Create new sObj
+            //sObj.Id = recordId;
+            sObj.put('Id',recordId); // sObject.put(fieldName,Value)
+            sObj.put(fieldName,fieldValue);
+            try 
+            {
+                UPDATE sObj;
+                return 'Success'; 
+            } catch(Exception e) 
+            {
+                System.debug(e.getMessage());
+                return 'e.getMessage()'; 
+            }
+        }
+        return 'Fields should not be empty';
+    }  
 }
