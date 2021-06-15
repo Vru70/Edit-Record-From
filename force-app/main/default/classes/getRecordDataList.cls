@@ -22,7 +22,7 @@ public with sharing class getRecordDataList
         return null;
     }  
     
-    @AuraEnabled (cacheable=true)
+    @AuraEnabled
     public static String setSObjectRecords(String fieldName, String fieldValue, String recordId, String SFDCobjectApiName)
     {
         if(!String.isEmpty(fieldName) && !String.isEmpty(recordId) && !String.isEmpty(SFDCobjectApiName))
