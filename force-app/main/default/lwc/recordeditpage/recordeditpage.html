@@ -1,11 +1,12 @@
 <template>
     <lightning-card>
-        <lightning-record-edit-form object-api-name={SFDCobjectApiName} record-id={recordId}
-                                    onchange={handleChange}>
-        <template if:true={fieldnames} for:each={fieldnames} for:item="field">
-        <lightning-input-field field-name={field} key={field} ></lightning-input-field>
-        </template>
+
+        <lightning-record-edit-form object-api-name={SFDCobjectApiName} record-id={recordId}>
+            <template if:true={fieldnames} for:each={fieldnames} for:item="field">
+                <lightning-input-field field-name={field} key={field} onchange={handleChnage} onfocusout={handleFocusOut} >            
+                </lightning-input-field>
+            </template>
         </lightning-record-edit-form>
-       
+    
     </lightning-card>
 </template>
