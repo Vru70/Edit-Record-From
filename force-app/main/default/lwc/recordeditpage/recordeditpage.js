@@ -64,7 +64,7 @@ export default class Recordeditpage extends LightningElement
         {
             this.fieldName = event.target.fieldName;
             this.flagChanged = false;
-            //console.log('fieldName :' + JSON.stringify(event.target.fieldName) + ' Value: ' + JSON.stringify(event.target.value));
+            console.log('fieldName :' + JSON.stringify(event.target.fieldName) + ' Value: ' + JSON.stringify(event.target.value));
             setSObjectRecords({
                 fieldName: event.target.fieldName,
                 fieldValue: event.target.value,

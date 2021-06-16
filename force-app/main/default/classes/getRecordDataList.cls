@@ -40,6 +40,7 @@ public with sharing class getRecordDataList
             {
                 Date dateVAL = Date.valueOf(fieldValue);
                 sObj.put(fieldName,dateVAL);
+
             }else 
             {
                 sObj.put(fieldName,fieldValue);
