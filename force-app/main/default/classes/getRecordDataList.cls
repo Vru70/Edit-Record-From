@@ -33,6 +33,7 @@ public with sharing class getRecordDataList
             Map<String, SObjectField> fieldMap = objectType.getDescribe().fields.getMap();          // map to het field
             Schema.SobjectField theField = fieldMap.get(fieldName);                                 
             Schema.DisplayType fieldType = theField.getDescribe().getType();                        // Collecting field type
+            //System.debug('fieldType : '+fieldType);
 
             sObj.put('Id',recordId);                                                                // sObject.put(fieldName,Value)
 
@@ -41,19 +42,45 @@ public with sharing class getRecordDataList
                 Date dateVAL = Date.valueOf(fieldValue);
                 sObj.put(fieldName,dateVAL);
 
-            }else 
+            }else if(String.valueOf(fieldType) == 'PERCENT')
+            {
+                Double DoubleVAL = Double.valueOf(fieldValue);
+                sObj.put(fieldName,DoubleVAL);
+
+            }else if(String.valueOf(fieldType) == 'DATETIME')
+            {
+                fieldValue = fieldValue.replace('T', ' ');
+                fieldValue = fieldValue.replace('Z', ' ');
+                DateTime datetimeVAL = DateTime.Valueof(fieldValue);
+                sObj.put(fieldName,datetimeVAL);
+
+            }else if(String.valueOf(fieldType) == 'DOUBLE')
+            {
+                Double DoubleVAL = Double.valueOf(fieldValue);
+                sObj.put(fieldName,DoubleVAL);
+
+            }else if(String.valueOf(fieldType) == 'BOOLEAN')
+            {
+                Boolean  boolVAL = Boolean.valueOf(fieldValue);
+                sObj.put(fieldName,boolVAL);
+
+            }else if(String.valueOf(fieldType) == 'CURRENCY')
+            {
+                Double DoubleVAL = Double.valueOf(fieldValue);
+                sObj.put(fieldName,DoubleVAL);
+
+            }else
             {
                 sObj.put(fieldName,fieldValue);
             }
-                     
             try 
             {
                 UPDATE sObj;
-                System.debug(' :Success: ');
+                System.debug(' ::Success:: ');
                 return 'Success'; 
             } catch(Exception e) 
             {
-                System.debug(e.getMessage());
+                System.debug('Error in Update : '+e.getMessage());
                 return ''+e.getMessage(); 
             }
         }
