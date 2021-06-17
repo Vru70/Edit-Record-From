@@ -76,7 +76,9 @@ export default class Recordeditpage extends LightningElement
                     if (data === 'Success')
                     {
                         this.variant = 'success';
-                        this.message = JSON.stringify(this.fieldName) + ' Saved Successfully';
+                        var msgVar = JSON.stringify(this.fieldName).replace('__c', '');
+                        msgVar = msgVar.replace('_', ' ');
+                        this.message = msgVar + ' Saved Successfully';
                         this.title = 'Success';
                         this.dispatchEvent(
                             new ShowToastEvent({
