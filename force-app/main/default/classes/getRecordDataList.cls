@@ -51,7 +51,7 @@ public with sharing class getRecordDataList
             {
                 fieldValue = fieldValue.replace('T', ' ');
                 fieldValue = fieldValue.replace('Z', ' ');
-                DateTime datetimeVAL = DateTime.Valueof(fieldValue);
+                DateTime datetimeVAL = DateTime.valueOfGMT(fieldValue);
                 sObj.put(fieldName,datetimeVAL);
 
             }else if(String.valueOf(fieldType) == 'DOUBLE')
