@@ -23,56 +23,12 @@ public with sharing class getRecordDataList
     }  
     
     @AuraEnabled
-    public static String setSObjectRecords(String fieldName, String fieldValue, String recordId, String SFDCobjectApiName)
+    public static String setSObjectRecords(String fieldData, String SFDCobjectApiName)
     {
-        if(!String.isEmpty(fieldName) && !String.isEmpty(recordId) && !String.isEmpty(SFDCobjectApiName))
+        Type t = Type.forName(SFDCobjectApiName);                               // Eg., conatct 
+        if(!String.isEmpty(fieldData) && !String.isEmpty(SFDCobjectApiName))
         {
-            SObject sObj = (SObject)(Type.forName('Schema.'+ SFDCobjectApiName).newInstance());     //  Create new sObj
-            
-            Schema.SObjectType objectType = Schema.getGlobalDescribe().get(SFDCobjectApiName);      // Object schema 
-            Map<String, SObjectField> fieldMap = objectType.getDescribe().fields.getMap();          // map to het field
-            Schema.SobjectField theField = fieldMap.get(fieldName);                                 
-            Schema.DisplayType fieldType = theField.getDescribe().getType();                        // Collecting field type
-            //System.debug('fieldType : '+fieldType);
-
-            sObj.put('Id',recordId);                                                                // sObject.put(fieldName,Value)
-
-            if(String.valueOf(fieldType) == 'DATE')
-            {
-                Date dateVAL = Date.valueOf(fieldValue);
-                sObj.put(fieldName,dateVAL);
-
-            }else if(String.valueOf(fieldType) == 'PERCENT')
-            {
-                Double DoubleVAL = Double.valueOf(fieldValue);
-                sObj.put(fieldName,DoubleVAL);
-
-            }else if(String.valueOf(fieldType) == 'DATETIME')
-            {
-                fieldValue = fieldValue.replace('T', ' ');
-                fieldValue = fieldValue.replace('Z', ' ');
-                DateTime datetimeVAL = DateTime.valueOfGMT(fieldValue);
-                sObj.put(fieldName,datetimeVAL);
-
-            }else if(String.valueOf(fieldType) == 'DOUBLE')
-            {
-                Double DoubleVAL = Double.valueOf(fieldValue);
-                sObj.put(fieldName,DoubleVAL);
-
-            }else if(String.valueOf(fieldType) == 'BOOLEAN')
-            {
-                Boolean  boolVAL = Boolean.valueOf(fieldValue);
-                sObj.put(fieldName,boolVAL);
-
-            }else if(String.valueOf(fieldType) == 'CURRENCY')
-            {
-                Double DoubleVAL = Double.valueOf(fieldValue);
-                sObj.put(fieldName,DoubleVAL);
-
-            }else
-            {
-                sObj.put(fieldName,fieldValue);
-            }
+            SObject sObj = (SObject)JSON.deserialize(fieldData,t);              // '{\"id\":\"0032w00000X6KgxAAF\",\"FirstName\":\"SonuTest1\"}'
             try 
             {
                 UPDATE sObj;
