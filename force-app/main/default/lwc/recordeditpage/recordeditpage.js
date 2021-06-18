@@ -4,8 +4,7 @@ import getSObjectRecords from '@salesforce/apex/getRecordDataList.getSObjectReco
 import setSObjectRecords from '@salesforce/apex/getRecordDataList.setSObjectRecords';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
-export default class Recordeditpage extends LightningElement
-{
+export default class Recordeditpage extends LightningElement {
     @api recordId;              // collectes record Id 
 
     @api SFDCobjectApiName;     //  Object API Name eg. Account , Contact
@@ -52,29 +51,28 @@ export default class Recordeditpage extends LightningElement
             })
     }
 
-    handleChnage(event)
-    {
+    handleChnage(event) {
         // console.log('Changed : ', JSON.stringify(event.target.fieldName));
         this.flagChanged = true;
     }
 
-    handleFocusOut(event)
-    {
-        if (this.flagChanged)
-        {
+    handleFocusOut(event) {
+        if (this.flagChanged) {
             this.fieldName = event.target.fieldName;
             this.flagChanged = false;
             console.log('fieldName :' + JSON.stringify(event.target.fieldName) + ' Value: ' + JSON.stringify(event.target.value));
+
+            let fieldData = {};
+            fieldData['Id'] = this.recordId;
+            fieldData[this.fieldName] = event.target.value;
+            console.log('New OBJ'+JSON.stringify(fieldData));
             setSObjectRecords({
-                fieldName: event.target.fieldName,
-                fieldValue: event.target.value,
-                recordId: this.recordId,
+                fieldData: JSON.stringify(fieldData),
                 SFDCobjectApiName: this.SFDCobjectApiName
             })
                 .then((data) => {
                     console.log('data aftr saving : ', data);
-                    if (data === 'Success')
-                    {
+                    if (data === 'Success') {
                         this.variant = 'success';
                         var msgVar = JSON.stringify(this.fieldName).replace('__c', '');
                         msgVar = msgVar.replace('_', ' ');
@@ -87,8 +85,7 @@ export default class Recordeditpage extends LightningElement
                                 variant: this.variant,
                             }),
                         );
-                    } else
-                    {
+                    } else {
                         this.variant = 'error';
                         this.message = '' + JSON.stringify(data);
                         this.title = 'Error in Saving SObject Record';
