@@ -28,7 +28,8 @@ public with sharing class getRecordDataList
         Type t = Type.forName(SFDCobjectApiName);                               // Eg., conatct 
         if(!String.isEmpty(fieldData) && !String.isEmpty(SFDCobjectApiName))
         {
-            SObject sObj = (SObject)JSON.deserialize(fieldData,t);              // '{\"id\":\"0032w00000X6KgxAAF\",\"FirstName\":\"SonuTest1\"}'
+            SObject sObj = (SObject)JSON.deserialize(fieldData,t); 
+            System.debug('fieldData : '+fieldData);                                    // '{\"id\":\"0032w00000X6KgxAAF\",\"FirstName\":\"SonuTest1\"}'
             try 
             {
                 UPDATE sObj;
