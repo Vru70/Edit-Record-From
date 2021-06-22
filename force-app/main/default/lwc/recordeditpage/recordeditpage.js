@@ -3,12 +3,19 @@ import { api, LightningElement, track } from 'lwc';
 import getSObjectRecords from '@salesforce/apex/getRecordDataList.getSObjectRecords';
 import setSObjectRecords from '@salesforce/apex/getRecordDataList.setSObjectRecords';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
 
-export default class Recordeditpage extends LightningElement {
+export default class Recordeditpage extends NavigationMixin(LightningElement) {
     @api recordId;              // collectes record Id 
 
     @api SFDCobjectApiName;     //  Object API Name eg. Account , Contact
     @api fieldSetName;          //  Name of FieldSet
+    @api formType;              // form Type eg, Edit , Inline Edit
+
+    @track NewForm = false;
+    @track EditForm = false;
+    @track InlineEditForm = false;
+    @track ReadOnlyForm = false;
 
     @track fieldnames;          // List of Field from FieldSet
     @track flagChanged = false; // flag for Input value changes
@@ -22,8 +29,34 @@ export default class Recordeditpage extends LightningElement {
     @track loaded = true;       // Loader Flag
 
     fieldName;
-
+    @api newId;
     connectedCallback() {
+        if (this.formType == 'New') {
+            this.NewForm = true;
+            this.EditForm = false;
+            this.InlineEditForm = false;
+            this.ReadOnlyForm = false;
+
+        } else if (this.formType == 'Edit') {
+            this.NewForm = false;
+            this.EditForm = true;
+            this.InlineEditForm = false;
+            this.ReadOnlyForm = false;
+
+        } else if (this.formType == 'InlineEdit') {
+            this.NewForm = false;
+            this.EditForm = false;
+            this.InlineEditForm = true;
+            this.ReadOnlyForm = false;
+
+        } else if (this.formType == 'ReadOnly') {
+            this.NewForm = false;
+            this.EditForm = false;
+            this.InlineEditForm = false;
+            this.ReadOnlyForm = true;
+
+        }
+
         getSObjectRecords({
             SFDCobjectApiName: this.SFDCobjectApiName,
             fieldSetName: this.fieldSetName
@@ -62,10 +95,10 @@ export default class Recordeditpage extends LightningElement {
             this.flagChanged = false;
             console.log('fieldName :' + JSON.stringify(event.target.fieldName) + ' Value: ' + JSON.stringify(event.target.value));
 
-            let fieldData = {};
+            let fieldData = {}; // New JSON Object for Sending Data BackEnd  
             fieldData['Id'] = this.recordId;
             fieldData[this.fieldName] = event.target.value;
-            console.log('New OBJ'+JSON.stringify(fieldData));
+            console.log('New OBJ' + JSON.stringify(fieldData));
             setSObjectRecords({
                 fieldData: JSON.stringify(fieldData),
                 SFDCobjectApiName: this.SFDCobjectApiName
@@ -73,18 +106,7 @@ export default class Recordeditpage extends LightningElement {
                 .then((data) => {
                     console.log('data aftr saving : ', data);
                     if (data === 'Success') {
-                        this.variant = 'success';
-                        var msgVar = JSON.stringify(this.fieldName).replace('__c', '');
-                        msgVar = msgVar.replace('_', ' ');
-                        this.message = msgVar + ' Saved Successfully';
-                        this.title = 'Success';
-                        this.dispatchEvent(
-                            new ShowToastEvent({
-                                title: this.title,
-                                message: this.message,
-                                variant: this.variant,
-                            }),
-                        );
+
                     } else {
                         this.variant = 'error';
                         this.message = '' + JSON.stringify(data);
@@ -112,5 +134,27 @@ export default class Recordeditpage extends LightningElement {
                     );
                 })
         }
+    }
+
+    handleSubmit(event) {
+        console.log('onsubmit event recordEditForm' + event.detail.fields);
+    }
+    handleSuccess(event) {
+        this.newId = event.detail.id;
+        console.log('onsuccess event recordEditForm', this.newId);
+        this.handleSubmitNew();
+    }
+
+    handleSubmitNew() {
+        console.log('IN handleSubmitNew' + this.newId + '  ' + this.SFDCobjectApiName);
+        // View a custom object record.
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: this.newId,
+                objectApiName: this.SFDCobjectApiName, // objectApiName is optional
+                actionName: 'view'
+            }
+        });
     }
 }

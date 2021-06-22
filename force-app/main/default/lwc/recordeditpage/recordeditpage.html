@@ -4,12 +4,47 @@
             <lightning-spinner alternative-text="Loading" class="loadingHolder"></lightning-spinner>
         </template>
         <template if:false={loaded}>
-            <lightning-record-edit-form object-api-name={SFDCobjectApiName} record-id={recordId}>
-                <template if:true={fieldnames} for:each={fieldnames} for:item="field">
-                    <lightning-input-field field-name={field} key={field} onchange={handleChnage} onfocusout={handleFocusOut}>
-                    </lightning-input-field>
-                </template>
-            </lightning-record-edit-form>
+            <template if:true={NewForm}>
+                <lightning-record-edit-form object-api-name={SFDCobjectApiName} onsuccess={handleSuccess}
+                    onsubmit={handleSubmit}>
+                    <template if:true={fieldnames} for:each={fieldnames} for:item="field">
+                        <lightning-input-field field-name={field} key={field}>
+                        </lightning-input-field>
+                    </template>
+                    <lightning-button class="slds-var-m-top_small" type="submit" label="Create Record">
+                    </lightning-button>
+                </lightning-record-edit-form>
+            </template>
+            <template if:true={EditForm}>
+                <lightning-record-edit-form object-api-name={SFDCobjectApiName} record-id={recordId}
+                    onsuccess={handleSuccess} onsubmit={handleSubmit}>
+                    <template if:true={fieldnames} for:each={fieldnames} for:item="field">
+                        <lightning-input-field field-name={field} key={field}>
+                        </lightning-input-field>
+                    </template>
+                    <lightning-button class="slds-var-m-top_small" variant="brand" type="submit" name="update"
+                        label="Update">
+                    </lightning-button>
+                </lightning-record-edit-form>
+            </template>
+            <template if:true={InlineEditForm}>
+                <lightning-record-edit-form object-api-name={SFDCobjectApiName} record-id={recordId}>
+                    <template if:true={fieldnames} for:each={fieldnames} for:item="field">
+                        <lightning-input-field field-name={field} key={field} onchange={handleChnage}
+                            onfocusout={handleFocusOut}>
+                        </lightning-input-field>
+                    </template>
+                </lightning-record-edit-form>
+            </template>
+            <template if:true={ReadOnlyForm}>
+                <lightning-record-edit-form object-api-name={SFDCobjectApiName} record-id={recordId} mode="readonly">
+                    <template if:true={fieldnames} for:each={fieldnames} for:item="field">
+                        <lightning-input-field field-name={field} key={field} read-only="true" disabled="true">
+                        </lightning-input-field>
+                    </template>
+                </lightning-record-edit-form>
+            </template>
+
         </template>
     </lightning-card>
 </template>

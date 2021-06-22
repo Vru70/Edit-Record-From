@@ -11,6 +11,7 @@
         <targetConfig targets="lightning__RecordPage">
             <property name="SFDCobjectApiName" label="Related Object API Name" type="String" default="" />
             <property name="fieldSetName" label="Field Set Name" type="String" default="" />
+            <property label="formType" name="formType" type="String" datasource="New,Edit,InlineEdit,ReadOnly" default="InlineEdit" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
