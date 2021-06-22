@@ -1,0 +1,9 @@
+<template>
+    <lightning-card title={title}>
+        <div style="height:310px">
+            <lightning-datatable key-field="id" data={contactList} enable-infinite-loading show-row-number-column
+                onloadmore={loadMoreData} hide-checkbox-column columns={columns}>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>
