@@ -1,3 +1,11 @@
+/**
+ * @author            : Vrushabh Uprikar
+ * @last modified on  : 06-23-2021
+ * @last modified by  : Vrushabh Uprikar
+ * Modifications Log 
+ * Ver   Date         Author             Modification
+ * 1.0   06-23-2021   Vrushabh Uprikar   Initial Version
+**/
 import { track, LightningElement } from 'lwc';
 import getLoadingdata from '@salesforce/apex/loadingController.getLoadingdata';
 export default class InfiniteLoading extends LightningElement {
@@ -38,7 +46,7 @@ export default class InfiniteLoading extends LightningElement {
             .then(data => {
                 let newRecords = [...this.contactList, ...data];
                 this.contactList = newRecords;
-                this.title = 'Total Loaded Records '+this.contactList.length;
+                this.title = 'Total Loaded Records ' + this.contactList.length;
                 this.error = undefined;
             })
             .catch(error => {

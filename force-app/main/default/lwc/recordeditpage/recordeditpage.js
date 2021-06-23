@@ -1,3 +1,11 @@
+/**
+ * @author            : Vrushabh Uprikar
+ * @last modified on  : 06-23-2021
+ * @last modified by  : Vrushabh Uprikar
+ * Modifications Log 
+ * Ver   Date         Author             Modification
+ * 1.0   06-23-2021   Vrushabh Uprikar   Initial Version
+**/
 import { api, LightningElement, track } from 'lwc';
 
 import getSObjectRecords from '@salesforce/apex/getRecordDataList.getSObjectRecords';
