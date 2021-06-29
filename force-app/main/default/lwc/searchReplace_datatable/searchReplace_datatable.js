@@ -53,7 +53,6 @@ export default class SearchReplace_datatable extends LightningElement {
         getAccs()
             .then((data) => {
                 this.data = data;
-                console.log('fetched data', data);
                 this.columns = columns;
                 this.error = undefined;
             })
@@ -68,7 +67,8 @@ export default class SearchReplace_datatable extends LightningElement {
         data_to_replace.forEach(element => {
             updateRecords({
                 Record_Id: element.Id,
-                Replace_text: this.replacetext
+                Replace_text: this.replacetext,
+                Replace_field: this.fieldOption
             });
         });
         refreshApex(this.data_to_replace);
@@ -76,19 +76,15 @@ export default class SearchReplace_datatable extends LightningElement {
 
     searchDataTable() {
         var searchString = this.searchKey
-        console.log('search key :', searchString)
         var allRecords = this.data;
-        console.log('allRecords', allRecords)
         var searchResults = [];
-
         searchResults = allRecords.filter(key => key[this.fieldOption] == searchString)
         this.data = searchResults;
-        console.log('search result' + searchResults);
+
     }
 
     handleKeyChange(event) {
         this.searchKey = event.target.value;
-        console.log('initial search key' + JSON.stringify(this.searchKey));
         this.searchDataTable();
     }
 
@@ -114,7 +110,6 @@ export default class SearchReplace_datatable extends LightningElement {
 
     handleChangeFields(event) {
         this.fieldOption = event.target.value;
-        console.log('Changed Field:', JSON.stringify(event.target.value));
     }
 
 }
