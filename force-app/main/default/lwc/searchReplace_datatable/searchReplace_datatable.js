@@ -43,6 +43,8 @@ export default class SearchReplace_datatable extends LightningElement {
     @track data = [];
     @track columns;
 
+    @track fieldOption = '';
+
     connectedCallback() {
         this.callData();
     }
@@ -52,7 +54,6 @@ export default class SearchReplace_datatable extends LightningElement {
             .then((data) => {
                 this.data = data;
                 console.log('fetched data', data);
-                //this.endingRecord = this.pageSize;
                 this.columns = columns;
                 this.error = undefined;
             })
@@ -62,19 +63,14 @@ export default class SearchReplace_datatable extends LightningElement {
             });
     }
 
-
     replaceValue() {
         let data_to_replace = this.data;
-        console.log('Data to replace : ', JSON.stringify(data_to_replace));
-        console.log('Text Data : ', this.replacetext);
-
         data_to_replace.forEach(element => {
             updateRecords({
                 Record_Id: element.Id,
                 Replace_text: this.replacetext
             });
         });
-
         refreshApex(this.data_to_replace);
     }
 
@@ -85,7 +81,7 @@ export default class SearchReplace_datatable extends LightningElement {
         console.log('allRecords', allRecords)
         var searchResults = [];
 
-        searchResults = allRecords.filter(key => key.Name == searchString)
+        searchResults = allRecords.filter(key => key[this.fieldOption] == searchString)
         this.data = searchResults;
         console.log('search result' + searchResults);
     }
@@ -103,6 +99,22 @@ export default class SearchReplace_datatable extends LightningElement {
 
     handelonchange(event) {
         this.replacetext = event.target.value;
+    }
+
+    // Fields
+
+    get FieldsOptions() {
+        return [
+            { label: 'Name', value: 'Name' },
+            { label: 'Phone', value: 'Phone' },
+            { label: 'Account Number', value: 'AccountNumber' },
+        ];
+    }
+
+
+    handleChangeFields(event) {
+        this.fieldOption = event.target.value;
+        console.log('Changed Field:', JSON.stringify(event.target.value));
     }
 
 }

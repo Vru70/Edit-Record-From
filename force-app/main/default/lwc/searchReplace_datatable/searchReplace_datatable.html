@@ -1,6 +1,6 @@
 <!--
   @author            : Vrushabh Uprikar
-  @last modified on  : 06-28-2021
+  @last modified on  : 06-29-2021
   @last modified by  : Vrushabh Uprikar
   Modifications Log 
   Ver   Date         Author             Modification
@@ -9,8 +9,15 @@
 <template>
     <lightning-card title="Datatable Search">
         <div class="slds-var-m-around_medium">
-            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
-                <div class="slds-size_1-of-3">
+            <div class="slds-grid slds-wrap">
+
+                <div class="slds-size_1-of-3 ">
+                    <lightning-combobox name="Fields" label="Fields" value={FieldsValue} placeholder="Select Fields"
+                        class="slds-var-m-bottom_small" options={FieldsOptions} onchange={handleChangeFields}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-size_1-of-3 ">
                     <lightning-input type="search" onchange={handleKeyChange} class="slds-var-m-bottom_small"
                         label="Search" value={searchKey}>
                     </lightning-input>
