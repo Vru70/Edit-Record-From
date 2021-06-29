@@ -1,6 +1,6 @@
 /**
  * @author            : Vrushabh Uprikar
- * @last modified on  : 06-28-2021
+ * @last modified on  : 06-29-2021
  * @last modified by  : Vrushabh Uprikar
  * Modifications Log 
  * Ver   Date         Author             Modification
@@ -65,15 +65,16 @@ export default class SearchReplace_datatable extends LightningElement {
 
     replaceValue() {
         let data_to_replace = this.data;
+        console.log('Data to replace : ', JSON.stringify(data_to_replace));
+        console.log('Text Data : ', this.replacetext);
+
         data_to_replace.forEach(element => {
-            console.log('value of id:', element.Id);
             updateRecords({
                 Record_Id: element.Id,
                 Replace_text: this.replacetext
             });
         });
-        this.callData();
-        console.log('OUTPUT : ', JSON.stringify(data_to_replace));
+
         refreshApex(this.data_to_replace);
     }
 
