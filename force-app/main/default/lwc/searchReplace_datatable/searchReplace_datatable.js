@@ -14,11 +14,10 @@ import updateRecords from '@salesforce/apex/SearchReplaceController.updateRecord
 export default class SearchReplace_datatable extends LightningElement {
     @track value;
     @track error;
-    @track data;
     @track searchKey = '';
     @track replacetext = [];
 
-    @track allData = [];
+    @track allData = []; // Datatable
     @track columns;
 
     @track fieldOption = '';
@@ -61,8 +60,6 @@ export default class SearchReplace_datatable extends LightningElement {
                 var xx = JSON.stringify(listOfRecords);
                 this.allData = JSON.parse(xx);
                 this.columns = items;
-                console.log('this.columns:', JSON.stringify(this.columns));
-                console.log('this.fieldOptionJSON:', JSON.stringify(this.fieldOptionJSON));
                 this.error = undefined;
             })
             .catch(error => {
@@ -75,7 +72,7 @@ export default class SearchReplace_datatable extends LightningElement {
 
 
     replaceValue() {
-        let data_to_replace = this.data;
+        let data_to_replace = this.allData;
         data_to_replace.forEach(element => {
             updateRecords({
                 Record_Id: element.Id,
@@ -88,10 +85,10 @@ export default class SearchReplace_datatable extends LightningElement {
 
     searchDataTable() {
         var searchString = this.searchKey
-        var allRecords = this.data;
+        var allRecords = this.allData;
         var searchResults = [];
         searchResults = allRecords.filter(key => key[this.fieldOption] == searchString)
-        this.data = searchResults;
+        this.allData = searchResults;
 
     }
 
