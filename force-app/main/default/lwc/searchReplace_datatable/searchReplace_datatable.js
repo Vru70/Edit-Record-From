@@ -1,6 +1,6 @@
 /**
  * @author            : Vrushabh Uprikar
- * @last modified on  : 06-29-2021
+ * @last modified on  : 06-30-2021
  * @last modified by  : Vrushabh Uprikar
  * Modifications Log 
  * Ver   Date         Author             Modification
@@ -8,30 +8,9 @@
 **/
 import { LightningElement, wire, api, track } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
-import getAccs from '@salesforce/apex/SearchReplaceController.getAccs';
+import getFieldsAndRecords from '@salesforce/apex/SearchReplaceController.getFieldsAndRecords';
 import updateRecords from '@salesforce/apex/SearchReplaceController.updateRecords';
 
-const columns = [{
-    label: 'Name',
-    fieldName: 'Name',
-    type: 'text',
-},
-{
-    label: 'Id',
-    fieldName: 'Id',
-    type: 'text'
-},
-{
-    label: 'Phone',
-    fieldName: 'Phone',
-    type: 'text'
-},
-{
-    label: 'Account Number',
-    fieldName: 'AccountNumber',
-    type: 'text'
-}
-];
 export default class SearchReplace_datatable extends LightningElement {
     @track value;
     @track error;
@@ -39,28 +18,61 @@ export default class SearchReplace_datatable extends LightningElement {
     @track searchKey = '';
     @track replacetext = [];
 
-
-    @track data = [];
+    @track allData = [];
     @track columns;
 
     @track fieldOption = '';
+    @track fieldOptionJSON;
+
+    @api SFDCobjectApiName;
+    @api fieldSetName;
 
     connectedCallback() {
-        this.callData();
-    }
+        getFieldsAndRecords({
+            strObjectApiName: this.SFDCobjectApiName,
+            strfieldSetName: this.fieldSetName
+        })
+            .then(data => {
 
-    callData() {
-        getAccs()
-            .then((data) => {
-                this.data = data;
-                this.columns = columns;
+                let objStr = JSON.parse(data);
+
+                let listOfFields = JSON.parse(Object.values(objStr)[1]);
+
+                //retrieve listOfRecords from the map
+                let listOfRecords = JSON.parse(Object.values(objStr)[0]);
+
+                let items = []; //local array to prepare columns
+                this.fieldOptionJSON = [];
+                listOfFields.map(element => {
+
+                    items = [...items, {
+                        label: element.label,
+                        fieldName: element.fieldPath
+                    }];
+
+                    //fileds for ComboBox
+                    this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                        label: element.label,
+                        value: element.fieldPath
+                    }];
+
+                });
+
+                var xx = JSON.stringify(listOfRecords);
+                this.allData = JSON.parse(xx);
+                this.columns = items;
+                console.log('this.columns:', JSON.stringify(this.columns));
+                console.log('this.fieldOptionJSON:', JSON.stringify(this.fieldOptionJSON));
                 this.error = undefined;
             })
             .catch(error => {
                 this.error = error;
-                this.data = undefined;
+                console.log('error', error);
+                this.allData = undefined;
             });
+
     }
+
 
     replaceValue() {
         let data_to_replace = this.data;
@@ -97,19 +109,15 @@ export default class SearchReplace_datatable extends LightningElement {
         this.replacetext = event.target.value;
     }
 
-    // Fields
 
     get FieldsOptions() {
-        return [
-            { label: 'Name', value: 'Name' },
-            { label: 'Phone', value: 'Phone' },
-            { label: 'Account Number', value: 'AccountNumber' },
-        ];
+        return this.fieldOptionJSON;
     }
 
 
     handleChangeFields(event) {
         this.fieldOption = event.target.value;
+        console.log('this.fieldOption :', JSON.stringify(event.target.value));
     }
 
 }
