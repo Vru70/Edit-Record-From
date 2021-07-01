@@ -8,7 +8,7 @@
 **/
 public class SearchReplaceController 
 {
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=false)
    public static String getFieldsAndRecords(String strObjectApiName, String strfieldSetName) 
    {
         Map<String, String> returnMap = new Map<String,String>();
