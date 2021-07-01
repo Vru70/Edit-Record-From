@@ -1,6 +1,6 @@
 /**
  * @author            : Vrushabh Uprikar
- * @last modified on  : 06-30-2021
+ * @last modified on  : 07-01-2021
  * @last modified by  : Vrushabh Uprikar
  * Modifications Log 
  * Ver   Date         Author             Modification
@@ -42,15 +42,16 @@ public class SearchReplaceController
 
 
    @AuraEnabled
-    public static String updateRecords(String Record_Id, String Replace_text, String Replace_field){
+    public static String updateRecords(String strObjectApiName, String Record_Id, String Replace_text, String Replace_field){
         if(!String.isEmpty(Record_Id) && !String.isEmpty(Replace_text))
         {
-            Account Acc = new Account();
-			Acc.Id = Record_Id;
-			Acc.put(Replace_field,Replace_text);                                
+            //get fields from FieldSet
+            SObject sObj = (SObject)(Type.forName('Schema.'+ strObjectApiName).newInstance()); //  Create new sObj
+			sObj.Id = Record_Id;
+			sObj.put(Replace_field,Replace_text);                                
             try 
             {
-                update Acc;
+                update sObj;
                 System.debug(' ::Success:: ');
                 return 'Success'; 
             } catch(Exception e) 
