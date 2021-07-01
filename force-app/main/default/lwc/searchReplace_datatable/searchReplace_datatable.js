@@ -1,6 +1,6 @@
 /**
  * @author            : Vrushabh Uprikar
- * @last modified on  : 06-30-2021
+ * @last modified on  : 07-01-2021
  * @last modified by  : Vrushabh Uprikar
  * Modifications Log 
  * Ver   Date         Author             Modification
@@ -8,11 +8,12 @@
 **/
 import { LightningElement, wire, api, track } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getFieldsAndRecords from '@salesforce/apex/SearchReplaceController.getFieldsAndRecords';
 import updateRecords from '@salesforce/apex/SearchReplaceController.updateRecords';
 
 export default class SearchReplace_datatable extends LightningElement {
-    @track value;
+
     @track error;
     @track searchKey = '';
     @track replacetext = [];
@@ -21,10 +22,15 @@ export default class SearchReplace_datatable extends LightningElement {
     @track columns;
 
     @track fieldOption = '';
-    @track fieldOptionJSON;
+    @track fieldOptionJSON; // list of fields option for combobox
+    @track FieldsValue; // default value of combobox
+
 
     @api SFDCobjectApiName;
     @api fieldSetName;
+
+
+    @track isSearchFlag = false;
 
     connectedCallback() {
         getFieldsAndRecords({
@@ -57,6 +63,7 @@ export default class SearchReplace_datatable extends LightningElement {
 
                 });
 
+                this.FieldsValue = this.fieldOptionJSON[0].value;
                 var xx = JSON.stringify(listOfRecords);
                 this.allData = JSON.parse(xx);
                 this.columns = items;
@@ -70,17 +77,31 @@ export default class SearchReplace_datatable extends LightningElement {
 
     }
 
+    handelonchange(event) {
+        this.replacetext = event.target.value;
+    }
 
-    replaceValue() {
-        let data_to_replace = this.allData;
-        data_to_replace.forEach(element => {
-            updateRecords({
-                Record_Id: element.Id,
-                Replace_text: this.replacetext,
-                Replace_field: this.fieldOption
+    handleReplace() { // onClick Replace
+        console.log('replace text:', this.replacetext);
+        if (this.isSearchFlag && (this.replacetext != '' || this.replacetext == null)) {
+            let data_to_replace = this.allData;
+            data_to_replace.forEach(element => {
+                updateRecords({
+                    Record_Id: element.Id,
+                    Replace_text: this.replacetext,
+                    Replace_field: this.fieldOption
+                });
             });
-        });
-        refreshApex(this.data_to_replace);
+            refreshApex(this.data_to_replace);
+        } else {
+            let evt = new ShowToastEvent({
+                title: 'Warning',
+                message: 'Replace text should not be empty',
+                variant: 'warning',
+                mode: 'dismissable'
+            });
+            this.dispatchEvent(evt);
+        }
     }
 
     searchDataTable() {
@@ -94,27 +115,17 @@ export default class SearchReplace_datatable extends LightningElement {
 
     handleKeyChange(event) {
         this.searchKey = event.target.value;
+        this.isSearchFlag = true;
         this.searchDataTable();
     }
 
-    handleReplace() {
-        console.log('replace text:', this.replacetext)
-        this.replaceValue();
-    }
-
-    handelonchange(event) {
-        this.replacetext = event.target.value;
-    }
-
-
-    get FieldsOptions() {
+    get FieldsOptions() { // combobox option set
         return this.fieldOptionJSON;
     }
 
 
-    handleChangeFields(event) {
+    handleChangeFields(event) { // on chnage of combobox value
         this.fieldOption = event.target.value;
-        console.log('this.fieldOption :', JSON.stringify(event.target.value));
     }
 
 }
