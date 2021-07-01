@@ -39,8 +39,6 @@ public class SearchReplaceController
         return null; // will return null if ObjectApi and FieldSet not found
    }
 
-
-
    @AuraEnabled
     public static String updateRecords(String strObjectApiName, String Record_Id, String Replace_text, String Replace_field){
         if(!String.isEmpty(Record_Id) && !String.isEmpty(Replace_text))
