@@ -19,6 +19,7 @@ export default class SearchReplace_datatable extends LightningElement {
     @track replacetext = [];
 
     @track allData = []; // Datatable
+    @track allDataOrgCopy = []; // DatatableOrignalCpy
     @track columns;
 
     @track fieldOption = '';
@@ -31,6 +32,7 @@ export default class SearchReplace_datatable extends LightningElement {
 
 
     @track isSearchFlag = false;
+    @track getUpdateRecData = '';
 
     connectedCallback() {
         getFieldsAndRecords({
@@ -64,8 +66,10 @@ export default class SearchReplace_datatable extends LightningElement {
                 });
 
                 this.FieldsValue = this.fieldOptionJSON[0].value;
+                this.fieldOption = this.fieldOptionJSON[0].value;
                 var xx = JSON.stringify(listOfRecords);
                 this.allData = JSON.parse(xx);
+                this.allDataOrgCopy = JSON.parse(xx);
                 this.columns = items;
                 this.error = undefined;
             })
@@ -84,16 +88,36 @@ export default class SearchReplace_datatable extends LightningElement {
     handleReplace() { // onClick Replace
         console.log('replace text:', this.replacetext);
         if (this.isSearchFlag && (this.replacetext != '' || this.replacetext == null)) {
+
             this.isSearchFlag = false;
             let data_to_replace = this.allData;
             data_to_replace.forEach(element => {
-                updateRecords({
+                this.getUpdateRecData = updateRecords({
+                    strObjectApiName: this.SFDCobjectApiName,
                     Record_Id: element.Id,
                     Replace_text: this.replacetext,
                     Replace_field: this.fieldOption
                 });
             });
-            refreshApex(this.data_to_replace);
+            console.log('getUpdateRecData:', this.getUpdateRecData);
+            if (this.getUpdateRecData == 'Success') {
+                const evt = new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Rename sucessful',
+                    variant: 'success',
+                    mode: 'dismissable'
+                });
+                this.dispatchEvent(evt);
+            } else {
+
+                const evt = new ShowToastEvent({
+                    title: 'Error',
+                    message: this.getUpdateRecData,
+                    variant: 'error',
+                    mode: 'dismissable'
+                });
+                this.dispatchEvent(evt);
+            }
         } else {
             let evt = new ShowToastEvent({
                 title: 'Warning',
@@ -109,16 +133,22 @@ export default class SearchReplace_datatable extends LightningElement {
         var searchString = this.searchKey
         var allRecords = this.allData;
         var searchResults = [];
-        searchResults = allRecords.filter(key => key[this.fieldOption] == searchString)
+        searchResults = allRecords.filter(key => key[this.fieldOption] == searchString);
         this.allData = searchResults;
 
     }
 
     handleKeyChange(event) {
-        if (this.searchKey == null || this.seact)
+
         this.searchKey = event.target.value;
-        this.isSearchFlag = true;
-        this.searchDataTable();
+
+        if (this.searchKey != null) {
+            this.isSearchFlag = true;
+            this.searchDataTable();
+        }
+        if (this.searchKey == null || this.searchKey == '') {
+            this.allData = this.allDataOrgCopy;
+        }
     }
 
     get FieldsOptions() { // combobox option set
