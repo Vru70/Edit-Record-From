@@ -84,6 +84,7 @@ export default class SearchReplace_datatable extends LightningElement {
     handleReplace() { // onClick Replace
         console.log('replace text:', this.replacetext);
         if (this.isSearchFlag && (this.replacetext != '' || this.replacetext == null)) {
+            this.isSearchFlag = false;
             let data_to_replace = this.allData;
             data_to_replace.forEach(element => {
                 updateRecords({
@@ -114,6 +115,7 @@ export default class SearchReplace_datatable extends LightningElement {
     }
 
     handleKeyChange(event) {
+        if (this.searchKey == null || this.seact)
         this.searchKey = event.target.value;
         this.isSearchFlag = true;
         this.searchDataTable();
