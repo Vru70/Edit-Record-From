@@ -23,7 +23,7 @@ export default class SearchReplace_datatable extends LightningElement {
     @track columns;
 
     @track fieldOption = '';
-    @track fieldOptionJSON; // list of fields option for combobox
+    @track fieldOptionJSON = []; // list of fields option for combobox
     @track FieldsValue; // default value of combobox
 
     @api SFDCobjectApiName;
@@ -46,7 +46,6 @@ export default class SearchReplace_datatable extends LightningElement {
                 let listOfRecords = JSON.parse(Object.values(objStr)[0]);
 
                 let items = []; //local array to prepare columns
-                this.fieldOptionJSON = [];
                 listOfFields.map(element => {
 
                     items = [...items, {
@@ -61,6 +60,7 @@ export default class SearchReplace_datatable extends LightningElement {
                     }];
 
                 });
+                console.log('listOfFields:', JSON.stringify(listOfFields));
 
                 this.FieldsValue = this.fieldOptionJSON[0].value;
                 this.fieldOption = this.fieldOptionJSON[0].value;
@@ -173,6 +173,7 @@ export default class SearchReplace_datatable extends LightningElement {
 
     handleChangeFields(event) { // on chnage of combobox value
         this.fieldOption = event.target.value;
+
     }
 
 }
