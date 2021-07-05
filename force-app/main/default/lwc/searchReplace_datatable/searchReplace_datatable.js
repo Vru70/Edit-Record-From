@@ -55,14 +55,65 @@ export default class SearchReplace_datatable extends LightningElement {
                     }];
 
                     //fileds for ComboBox
-                    this.fieldOptionJSON = [...this.fieldOptionJSON, {
-                        label: element.label,
-                        value: element.fieldPath,
-                        type: element.type
-                    }];
+                    var datetimeTypeAttr = {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    };
+                    var timeTypeAttr = {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                        timezone: "Asia/Kolkata"
+                    };
+                    var dateTypeAttr = {
+                        month: "2-digit",
+                        day: "2-digit",
+                        timezone: "Asia/Kolkata"
+                    };
+
+                    if (element.type == 'datetime' || element.type == "datetime") {
+                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                            label: element.label,
+                            value: element.fieldPath,
+                            type: element.type,
+                            typeAttributes: datetimeTypeAttr
+                        }];
+                    } else if (element.type == 'date' || element.type == "date") {
+                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                            label: element.label,
+                            value: element.fieldPath,
+                            type: element.type,
+                            typeAttributes: dateTypeAttr
+                        }];
+
+                    } else if (element.type == 'time' || element.type == "time") {
+                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                            label: element.label,
+                            value: element.fieldPath,
+                            type: element.type,
+                            typeAttributes: timeTypeAttr
+                        }];
+
+                    } else {
+                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                            label: element.label,
+                            value: element.fieldPath,
+                            type: element.type
+
+                        }];
+                    }
 
                 });
-                console.log('listOfFields:', JSON.stringify(listOfFields));
+                console.log('listOfFields: ', JSON.stringify(listOfFields));
+                console.log('fieldOptionJSON: ', JSON.parse(JSON.stringify(this.fieldOptionJSON)));
 
                 this.FieldsValue = this.fieldOptionJSON[0].value;
                 this.fieldOption = this.fieldOptionJSON[0].value;
@@ -202,7 +253,16 @@ export default class SearchReplace_datatable extends LightningElement {
         //     {
         //         "value": "CreatedDate",
         //         "label": "Created Date",
-        //         "type": "datetime"
+        //         "type": "datetime",
+        //         "typeAttributes": {
+        //             "year": "numeric",
+        //             "month": "long",
+        //             "day": "2-digit",
+        //             "hour": "2-digit",
+        //             "minute": "2-digit",
+        //             "hour12": true,
+        //             "timezone": "Asia/Kolkata"
+        //         }
         //     }
         // ]
     }
