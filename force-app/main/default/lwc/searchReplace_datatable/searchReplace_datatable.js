@@ -25,6 +25,7 @@ export default class SearchReplace_datatable extends LightningElement {
     @track fieldOption = '';
     @track fieldOptionJSON = []; // list of fields option for combobox
     @track FieldsValue; // default value of combobox
+    @track fieldType; // data type
 
     @api SFDCobjectApiName;
     @api fieldSetName;
@@ -56,7 +57,8 @@ export default class SearchReplace_datatable extends LightningElement {
                     //fileds for ComboBox
                     this.fieldOptionJSON = [...this.fieldOptionJSON, {
                         label: element.label,
-                        value: element.fieldPath
+                        value: element.fieldPath,
+                        type: element.type
                     }];
 
                 });
@@ -147,10 +149,16 @@ export default class SearchReplace_datatable extends LightningElement {
     }
 
     searchDataTable() {
-        var searchString = this.searchKey
-        var allRecords = this.allDataOrgCopy;
-        var searchResults = [];
-        searchResults = allRecords.filter(key => key[this.fieldOption].includes(searchString));
+        let searchString = this.searchKey;
+        let allRecords = this.allDataOrgCopy;
+        let searchResults = [];
+        let fieldDataType = this.fieldType;
+        if (fieldDataType == 'double' || fieldDataType == "double") {
+            searchResults = allRecords.filter(key => key[this.fieldOption] == parseInt(searchString));
+        } else {
+            searchResults = allRecords.filter(key => key[this.fieldOption].includes(searchString));
+        }
+
         this.allData = searchResults;
     }
 
@@ -169,11 +177,43 @@ export default class SearchReplace_datatable extends LightningElement {
 
     get FieldsOptions() { // combobox option set
         return this.fieldOptionJSON;
+        // return [
+        //     {
+        //         "value": "Name",
+        //         "label": "Account Name",
+        //         "type": "string"
+        //     },
+        //     {
+        //         "value": "Email__c",
+        //         "label": "Email",
+        //         "type": "email"
+        //     },
+        //     {
+
+        //         "value": "NumberofLocations__c",
+        //         "label": "Number of Locations",
+        //         "type": "double"
+        //     },
+        //     {
+        //         "value": "Industry",
+        //         "label": "Industry",
+        //         "type": "picklist"
+        //     },
+        //     {
+        //         "value": "CreatedDate",
+        //         "label": "Created Date",
+        //         "type": "datetime"
+        //     }
+        // ]
     }
 
     handleChangeFields(event) { // on chnage of combobox value
         this.fieldOption = event.target.value;
-
+        console.log('fieldOption: ' + this.fieldOption);
+        let varfieldType = this.fieldOptionJSON.filter(key => key.value === this.fieldOption);
+        let dataType = JSON.parse(JSON.stringify(varfieldType[0]));
+        this.fieldType = dataType.type;
+        console.log(' this.fieldType: ' + dataType.type);
     }
 
 }
