@@ -11,6 +11,7 @@ import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getFieldsAndRecords from '@salesforce/apex/SearchReplaceController.getFieldsAndRecords';
 import updateRecords from '@salesforce/apex/SearchReplaceController.updateRecords';
+import { reduceErrors } from 'c/ldsUtils';
 
 export default class SearchReplace_datatable extends LightningElement {
 
@@ -124,8 +125,8 @@ export default class SearchReplace_datatable extends LightningElement {
                 this.error = undefined;
             })
             .catch(error => {
-                this.error = error;
-                console.log('error', error);
+                this.error = reduceErrors(error);
+                console.log('this.error', this.error);
                 this.allData = undefined;
             });
 
@@ -170,10 +171,11 @@ export default class SearchReplace_datatable extends LightningElement {
                         }
                     })
                     .catch((error) => {
-                        console.log('error:', error);
+                        this.error = reduceErrors(error);
+                        console.log(' this.error:', this.error);
                         const evt = new ShowToastEvent({
                             title: 'Error',
-                            message: error,
+                            message: 'Error while replace data' + this.error,
                             variant: 'error',
                             mode: 'dismissable'
                         });
