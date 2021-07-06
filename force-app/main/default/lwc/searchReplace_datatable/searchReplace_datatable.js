@@ -146,7 +146,8 @@ export default class SearchReplace_datatable extends LightningElement {
                     strObjectApiName: this.SFDCobjectApiName,
                     Record_Id: element.Id,
                     Replace_text: this.replacetext,
-                    Replace_field: this.fieldOption
+                    Replace_field: this.fieldOption,
+                    field_type: this.fieldType
                 })
                     .then(result => {
                         console.log('result:', result);
