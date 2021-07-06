@@ -40,13 +40,20 @@ public class SearchReplaceController
    }
 
    @AuraEnabled
-    public static String updateRecords(String strObjectApiName, String Record_Id, String Replace_text, String Replace_field){
+    public static String updateRecords(String strObjectApiName, String Record_Id, String Replace_text, String Replace_field, String field_type){
         if(!String.isEmpty(Record_Id) && !String.isEmpty(Replace_text))
         {
             //get fields from FieldSet
             SObject sObj = (SObject)(Type.forName('Schema.'+ strObjectApiName).newInstance()); //  Create new sObj
 			sObj.Id = Record_Id;
-			sObj.put(Replace_field,Replace_text);                                
+            if(field_type == 'double')
+            {
+                Decimal myDecimal = decimal.valueOf(Replace_text);
+                sObj.put(Replace_field,myDecimal);
+            }else {
+                sObj.put(Replace_field,Replace_text);
+            }
+			                               
             try 
             {
                 update sObj;
