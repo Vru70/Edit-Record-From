@@ -48,72 +48,70 @@ export default class SearchReplace_datatable extends LightningElement {
 
                 let items = []; //local array to prepare columns
                 listOfFields.map(element => {
-
-                    items = [...items, {
-                        label: element.label,
-                        fieldName: element.fieldPath
-                    }];
-
-                    //fileds for ComboBox
+                    //fileds for column
                     var datetimeTypeAttr = {
-                        day: 'numeric',
-                        month: 'short',
                         year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
                         hour: '2-digit',
                         minute: '2-digit',
                         second: '2-digit',
+                        timezone: 'Asia/Kolkata',
                         hour12: true
                     };
                     var timeTypeAttr = {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                        timezone: "Asia/Kolkata"
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        timezone: 'Asia/Kolkata',
+                        hour12: true
                     };
                     var dateTypeAttr = {
-                        month: "2-digit",
-                        day: "2-digit",
-                        timezone: "Asia/Kolkata"
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        timezone: 'Asia/Kolkata',
+                        hour12: true
                     };
 
                     if (element.type == 'datetime' || element.type == "datetime") {
-                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                        items = [...items, {
                             label: element.label,
-                            value: element.fieldPath,
-                            type: element.type,
+                            fieldName: element.fieldPath,
+                            type: 'date',
                             typeAttributes: datetimeTypeAttr
                         }];
                     } else if (element.type == 'date' || element.type == "date") {
-                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                        items = [...items, {
                             label: element.label,
-                            value: element.fieldPath,
+                            fieldName: element.fieldPath,
                             type: element.type,
                             typeAttributes: dateTypeAttr
                         }];
 
                     } else if (element.type == 'time' || element.type == "time") {
-                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                        items = [...items, {
                             label: element.label,
-                            value: element.fieldPath,
+                            fieldName: element.fieldPath,
                             type: element.type,
                             typeAttributes: timeTypeAttr
                         }];
 
                     } else {
-                        this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                        items = [...items, {
                             label: element.label,
-                            value: element.fieldPath,
-                            type: element.type
-
+                            fieldName: element.fieldPath
                         }];
                     }
+                    // fileds for ComboBox
+                    this.fieldOptionJSON = [...this.fieldOptionJSON, {
+                        label: element.label,
+                        value: element.fieldPath,
+                        type: element.type
+
+                    }];
 
                 });
-                console.log('listOfFields: ', JSON.stringify(listOfFields));
-                console.log('fieldOptionJSON: ', JSON.parse(JSON.stringify(this.fieldOptionJSON)));
 
                 this.FieldsValue = this.fieldOptionJSON[0].value;
                 this.fieldOption = this.fieldOptionJSON[0].value;
@@ -121,6 +119,8 @@ export default class SearchReplace_datatable extends LightningElement {
                 this.allData = JSON.parse(xx);
                 this.allDataOrgCopy = JSON.parse(xx);
                 this.columns = items;
+                console.log('this.columns:', JSON.parse(JSON.stringify(this.columns)));
+                console.log('this.allData:', JSON.parse(JSON.stringify(this.allData)));
                 this.error = undefined;
             })
             .catch(error => {
@@ -209,14 +209,11 @@ export default class SearchReplace_datatable extends LightningElement {
         } else {
             searchResults = allRecords.filter(key => key[this.fieldOption].includes(searchString));
         }
-
         this.allData = searchResults;
     }
 
     handleKeyChange(event) {
-
         this.searchKey = event.target.value;
-
         if (this.searchKey !== null) {
             this.isSearchFlag = true;
             this.searchDataTable();
@@ -226,48 +223,13 @@ export default class SearchReplace_datatable extends LightningElement {
         }
     }
 
-    get FieldsOptions() { // combobox option set
+    get FieldsOptions() {
+        // combobox option set
         return this.fieldOptionJSON;
-        // return [
-        //     {
-        //         "value": "Name",
-        //         "label": "Account Name",
-        //         "type": "string"
-        //     },
-        //     {
-        //         "value": "Email__c",
-        //         "label": "Email",
-        //         "type": "email"
-        //     },
-        //     {
-
-        //         "value": "NumberofLocations__c",
-        //         "label": "Number of Locations",
-        //         "type": "double"
-        //     },
-        //     {
-        //         "value": "Industry",
-        //         "label": "Industry",
-        //         "type": "picklist"
-        //     },
-        //     {
-        //         "value": "CreatedDate",
-        //         "label": "Created Date",
-        //         "type": "datetime",
-        //         "typeAttributes": {
-        //             "year": "numeric",
-        //             "month": "long",
-        //             "day": "2-digit",
-        //             "hour": "2-digit",
-        //             "minute": "2-digit",
-        //             "hour12": true,
-        //             "timezone": "Asia/Kolkata"
-        //         }
-        //     }
-        // ]
     }
 
-    handleChangeFields(event) { // on chnage of combobox value
+    handleChangeFields(event) {
+        // on chnage of combobox value
         this.fieldOption = event.target.value;
         console.log('fieldOption: ' + this.fieldOption);
         let varfieldType = this.fieldOptionJSON.filter(key => key.value === this.fieldOption);
@@ -276,4 +238,7 @@ export default class SearchReplace_datatable extends LightningElement {
         console.log(' this.fieldType: ' + dataType.type);
     }
 
+    handleFilter(event) {
+        console.log('Handle Filter:');
+    }
 }
