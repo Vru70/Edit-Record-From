@@ -32,6 +32,7 @@ export default class SearchReplace_datatable extends LightningElement {
     @api fieldSetName;
 
     isSearchFlag = false;
+    @track filterState = false;
 
     connectedCallback() {
         getFieldsAndRecords({
@@ -241,7 +242,11 @@ export default class SearchReplace_datatable extends LightningElement {
         console.log(' this.fieldType: ' + dataType.type);
     }
 
-    handleFilter(event) {
-        console.log('Handle Filter:');
+    handleFilter() {
+        this.filterState = !this.filterState;
     }
+    closePopover() {
+        this.filterState = false;
+    }
+
 }
