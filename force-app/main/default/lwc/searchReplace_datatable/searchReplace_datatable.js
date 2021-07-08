@@ -11,7 +11,6 @@ import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getFieldsAndRecords from '@salesforce/apex/SearchReplaceController.getFieldsAndRecords';
 import updateRecords from '@salesforce/apex/SearchReplaceController.updateRecords';
-import getSObjectRecords from '@salesforce/apex/SearchReplaceController.getSObjectRecords';
 import { reduceErrors } from 'c/ldsUtils';
 
 export default class SearchReplace_datatable extends LightningElement {
@@ -133,34 +132,6 @@ export default class SearchReplace_datatable extends LightningElement {
                 console.log('this.error', this.error);
                 this.allData = undefined;
             });
-
-
-
-        getSObjectRecords({
-            SFDCobjectApiName: this.SFDCobjectApiName,
-            fieldSetName: this.fieldSetName
-        })
-            .then((data) => {
-                this.fieldnames = data;
-                this.error = undefined;
-                console.log('this.fieldnames:', JSON.parse(JSON.stringify(this.fieldnames)));
-            })
-            .catch(error => {
-                this.error = reduceErrors(error);
-                this.fieldnames = undefined;
-                this.variant = 'error';
-                this.message = '' + error;
-                this.title = 'Error in Loading SObject Record';
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: this.title,
-                        message: this.message,
-                        variant: this.variant,
-                    }),
-                );
-                console.log('error in loading', error);
-            });
-
     }
 
     handelonchange(event) {
@@ -218,13 +189,13 @@ export default class SearchReplace_datatable extends LightningElement {
 
             setTimeout(() => {
                 this.connectedCallback();
-            }, 1000);
+            }, 500);
 
         }
         else {
             let evt = new ShowToastEvent({
                 title: 'Warning',
-                message: 'Replace text should not be empty',
+                message: 'Search and Replace text should not be empty',
                 variant: 'warning',
                 mode: 'dismissable'
             });
@@ -254,6 +225,7 @@ export default class SearchReplace_datatable extends LightningElement {
         }
         if (this.searchKey == null || this.searchKey == '') {
             this.allData = this.allDataOrgCopy;
+            this.isSearchFlag = false;
         }
     }
 
