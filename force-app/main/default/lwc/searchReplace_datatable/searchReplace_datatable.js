@@ -11,6 +11,7 @@ import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getFieldsAndRecords from '@salesforce/apex/SearchReplaceController.getFieldsAndRecords';
 import updateRecords from '@salesforce/apex/SearchReplaceController.updateRecords';
+import getSObjectRecords from '@salesforce/apex/SearchReplaceController.getSObjectRecords';
 import { reduceErrors } from 'c/ldsUtils';
 
 export default class SearchReplace_datatable extends LightningElement {
@@ -33,6 +34,8 @@ export default class SearchReplace_datatable extends LightningElement {
 
     isSearchFlag = false;
     @track filterState = false;
+
+    @track fieldnames;
 
     connectedCallback() {
         getFieldsAndRecords({
@@ -129,6 +132,33 @@ export default class SearchReplace_datatable extends LightningElement {
                 this.error = reduceErrors(error);
                 console.log('this.error', this.error);
                 this.allData = undefined;
+            });
+
+
+
+        getSObjectRecords({
+            SFDCobjectApiName: this.SFDCobjectApiName,
+            fieldSetName: this.fieldSetName
+        })
+            .then((data) => {
+                this.fieldnames = data;
+                this.error = undefined;
+                console.log('this.fieldnames:', JSON.parse(JSON.stringify(this.fieldnames)));
+            })
+            .catch(error => {
+                this.error = reduceErrors(error);
+                this.fieldnames = undefined;
+                this.variant = 'error';
+                this.message = '' + error;
+                this.title = 'Error in Loading SObject Record';
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: this.title,
+                        message: this.message,
+                        variant: this.variant,
+                    }),
+                );
+                console.log('error in loading', error);
             });
 
     }
@@ -245,8 +275,16 @@ export default class SearchReplace_datatable extends LightningElement {
     handleFilter() {
         this.filterState = !this.filterState;
     }
+
     closePopover() {
         this.filterState = false;
+    }
+
+    handleApply() {
+
+    }
+    handleSearchChnage() {
+
     }
 
 }
