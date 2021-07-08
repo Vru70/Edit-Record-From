@@ -43,13 +43,17 @@
                                     </lightning-icon>
                                 </button>
                                 <div class="slds-popover__body">
-                                    <p>body</p>
-                                    <lightning-input type="text" variant="standard" name="name" label="label"
-                                        placeholder="type here...">
-                                    </lightning-input>
+                                    <lightning-record-edit-form object-api-name={SFDCobjectApiName}>
+                                        <template if:true={fieldnames} for:each={fieldnames} for:item="field">
+                                            <lightning-input-field field-name={field} key={field}
+                                                onchange={handleSearchChnage}>
+                                            </lightning-input-field>
+                                        </template>
+                                    </lightning-record-edit-form>
                                 </div>
                                 <footer class="slds-popover__footer">
-                                    <p>footer</p>
+                                    <lightning-button variant="brand" label="Apply" onclick={handleApply}>
+                                    </lightning-button>
                                 </footer>
                             </section>
                         </div>
