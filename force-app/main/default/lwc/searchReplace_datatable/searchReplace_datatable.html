@@ -29,30 +29,14 @@
                         </lightning-button>
                     </div>
                     <div class="slds-var-p-left_x-small">
-                        <lightning-button-icon-stateful icon-name="utility:filterList" selected={filterState}
-                            onclick={handleFilter} alternative-text="Filter"></lightning-button-icon-stateful>
-                        <div if:true={filterState} style="position: relative;">
-                            <section
-                                class="slds-popover slds-popover_medium slds-popover_prompt_top-right slds-nubbin_top-right"
-                                role="dialog">
-                                <button
-                                    class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close"
-                                    title="Close dialog" onclick={closePopover}>
-                                    <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close"
-                                        size="small">
-                                    </lightning-icon>
-                                </button>
-                                <div class="slds-popover__body">
-
-                                </div>
-                            </section>
-                        </div>
+                        <c-filter alldata={allData} ></c-filter>
                     </div>
                 </div>
             </div>
-            <lightning-datatable key-field="Id" data={allData} columns={columns} show-row-number-column
-                hide-checkbox-column>
-            </lightning-datatable>
+        </div>
+        <lightning-datatable key-field="Id" data={allData} columns={columns} show-row-number-column
+            hide-checkbox-column>
+        </lightning-datatable>
         </div>
     </lightning-card>
 

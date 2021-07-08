@@ -34,7 +34,7 @@ export default class SearchReplace_datatable extends LightningElement {
     isSearchFlag = false;
     @track filterState = false;
 
-    @track fieldnames;
+    fieldnames = []; // list of field names
 
     connectedCallback() {
         getFieldsAndRecords({
@@ -253,9 +253,6 @@ export default class SearchReplace_datatable extends LightningElement {
     }
 
     handleApply() {
-
-    }
-    handleSearchChnage() {
 
     }
 
