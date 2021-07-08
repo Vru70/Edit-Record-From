@@ -1,0 +1,82 @@
+<template>
+    <div class="slds-var-p-left_x-small">
+        <lightning-button-icon-stateful icon-name="utility:filterList" selected={filterState} onclick={handleFilter}
+            alternative-text="Filter">
+        </lightning-button-icon-stateful>
+
+        <div if:true={filterState} style="position: relative;">
+            <section class="slds-popover slds-popover_medium slds-popover_prompt_top-right slds-nubbin_top-right"
+                role="dialog">
+                <div class="demo-only-element"
+                    style="background-color:#fafaf9;position:relative;height:600px;overflow:hidden;display:flex;flex-direction:row-reverse">
+                    <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-panel_drawer slds-is-open"
+                        aria-hidden="false" id="example-unique-id-72">
+                        <div class="slds-panel__header">
+                            <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Filter">
+                                Filter</h2>
+                            <div class="slds-panel__header-actions">
+                                <lightning-button-icon icon-name="utility:close" variant="close"
+                                    alternative-text="Close Filter" title="Close Filter" onclick={closePopover}>
+                                </lightning-button-icon>
+                            </div>
+                        </div>
+                        <div class="slds-panel__body">
+                            <div class="slds-filters">
+                                <ol class="slds-list_vertical slds-list_vertical-space">
+                                    <li class="slds-item slds-hint-parent">
+                                        <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                                            <button class="slds-button_reset slds-grow slds-has-blur-focus">
+                                                <span class="slds-assistive-text">Edit filter:</span>
+                                                <span class="slds-show slds-text-body_small">Show Me</span>
+                                                <span class="slds-show">All Records</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ol>
+                                <h3 class="slds-text-body_small slds-var-m-vertical_x-small">Matching all these filters
+                                </h3>
+                                <ol class="slds-list_vertical slds-list_vertical-space">
+                                    <li class="slds-item slds-hint-parent">
+                                        <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                                            <button class="slds-button_reset slds-grow slds-has-blur-focus">
+                                                <span class="slds-assistive-text">Edit filter:</span>
+                                                <span class="slds-show slds-text-body_small">Created Date</span>
+                                                <span class="slds-show">equals THIS WEEK</span>
+                                            </button>
+                                            <lightning-button-icon
+                                                class="slds-button slds-button_icon slds-button_icon slds-button_icon-small"
+                                                icon-name="utility:delete" title="Remove equals THIS WEEK">
+                                                <span class="slds-assistive-text">Remove filter: List Price greater than
+                                                    &quot;500&quot;</span>
+                                            </lightning-button-icon>
+                                        </div>
+                                    </li>
+                                    <li class="slds-item slds-hint-parent">
+                                        <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                                            <button class="slds-button_reset slds-grow slds-has-blur-focus">
+                                                <span class="slds-assistive-text">Edit filter:</span>
+                                                <span class="slds-show slds-text-body_small">List Price</span>
+                                                <span class="slds-show">greater than &quot;500&quot;</span>
+                                            </button>
+                                            <lightning-button-icon
+                                                class="slds-button slds-button_icon slds-button_icon slds-button_icon-small"
+                                                icon-name="utility:delete" title="Remove greater than &quot;500&quot;">
+                                                <span class="slds-assistive-text">Remove filter: List Price greater than
+                                                    &quot;500&quot;</span>
+                                            </lightning-button-icon>
+                                        </div>
+                                    </li>
+                                </ol>
+                                <div class="slds-filters__footer slds-grid slds-shrink-none">
+                                    <button class="slds-button_reset slds-text-link">Add Filter</button>
+                                    <button class="slds-button_reset slds-text-link slds-col_bump-left">Remove
+                                        All</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</template>
