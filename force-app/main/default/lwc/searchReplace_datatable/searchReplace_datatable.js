@@ -189,7 +189,7 @@ export default class SearchReplace_datatable extends LightningElement {
 
             setTimeout(() => {
                 this.connectedCallback();
-            }, 500);
+            }, 1000);
 
         }
         else {
