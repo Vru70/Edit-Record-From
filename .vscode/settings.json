@@ -4,5 +4,10 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "files.autoSave": "afterDelay"
+  "files.autoSave": "afterDelay",
+  "salesforcedx-vscode-apex.java.home": "C://Program Files//Java//jdk-16.0.1//bin",
+  "debug.javascript.debugByLinkOptions": "on",
+  "debug.javascript.resourceRequestOptions": {
+  
+  }
 }
