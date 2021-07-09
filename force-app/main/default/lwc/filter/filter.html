@@ -25,55 +25,67 @@
                         <div class="slds-panel__body">
                             <div class="slds-filters">
                                 <!-- FILTER CODE     START-->
-                                <ol class="slds-list_vertical slds-list_vertical-space">
-                                    <li class="slds-item slds-hint-parent">
-                                        <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
-                                            <lightning-combobox label="Resource" placeholder="Select..."
-                                                options={resourceOptions}
-                                                onchange={handleResourceChange}>
-                                            </lightning-combobox>
-                                            <lightning-combobox label="Operator" placeholder="Select..."
-                                                options={operatorOptions} onchange={handleOperatorChange}
-                                                disabled={isOperatorDisabled}>
-                                            </lightning-combobox>
-                                            <lightning-input type={valueType} variant="standard" name="Value"
-                                                disabled={isValueDisabled} label="Value" onchange={onChangeValue}>
-                                            </lightning-input>
+                                <div class="slds-grid slds-grid_vertical">
+                                    <div class="slds-col">
+                                        <lightning-combobox label="Resource" placeholder="Select..."
+                                            options={resourceOptions} onchange={handleResourceChange}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col">
+                                        <lightning-combobox label="Operator" placeholder="Select..."
+                                            options={operatorOptions} onchange={handleOperatorChange}
+                                            disabled={isOperatorDisabled}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col">
+                                        <lightning-input type={valueType} variant="standard" name="Value"
+                                            disabled={isValueDisabled} label="Value" onchange={onChangeValue}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-grid slds-gutters slds-var-p-top_small">
+                                        <div class="slds-col slds-align_absolute-center">
+                                            <lightning-button variant="neutral" label="Add Filter"
+                                                onclick={onAddFilter}></lightning-button>
                                         </div>
-                                    </li>
-                                </ol>
+                                        <div class="slds-col slds-align_absolute-center">
+                                            <lightning-button variant="destructive-text" label="Remove All"
+                                                onclick={onRemoveAll}></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <h3 class="slds-text-body_small slds-var-m-vertical_x-small">Matching all these filters
                                 </h3>
-                                <ul class="slds-list_vertical slds-list_vertical-space">
-                                    <li class="slds-item slds-hint-parent">
-                                        <div
-                                            class="slds-filters__item slds-grid slds-grid_vertical-align-center slds-is-new">
-                                            <button class="slds-button_reset slds-grow slds-has-blur-focus">
-                                                <span class="slds-assistive-text">Edit filter:</span>
-                                                <span class="slds-show">New Filter</span>
-                                            </button>
-                                            <button
-                                                class="slds-button slds-button_icon slds-button_icon slds-button_icon-small"
-                                                title="Remove New Filter">
+                                <!-- FOR EACH CODE     START-->
+                                <ul class="slds-list_vertical slds-list_vertical-space slds-scrollable_y">
+                                    <template if:true={filterCriteriaList} for:each={filterCriteriaList}
+                                        for:item="filter">
+                                        <li class="slds-item slds-hint-parent" key={filter.Id}>
+                                            <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                                                <div class="slds-grow slds-has-blur-focus">
+                                                    <span class="slds-show">{filter.resource}:</span>
+                                                    <span class="slds-show">{filter.operator}</span>
+                                                    <span class="slds-show">{filter.value}</span>
+                                                </div>
                                                 <lightning-button-icon icon-name="utility:delete"
                                                     alternative-text="Delete" class="slds-var-m-left_xx-small"
-                                                    title="Delete">
+                                                    onclick={deleteFilter} title="Delete">
                                                 </lightning-button-icon>
-                                                <span class="slds-assistive-text">Remove filter: New Filter</span>
-                                            </button>
-                                        </div>
-                                    </li>
+                                            </div>
+                                        </li>
+                                    </template>
                                 </ul>
+                                <!-- FOR EACH CODE     END-->
                                 <!-- FILTER CODE     END-->
                                 <!-- FOOTER CODE     START-->
-                                <div class="slds-filters__footer slds-grid slds-shrink-none">
-                                    <button class="slds-button_reset slds-text-link" onclick={onAddFilter}>Add
-                                        Filter</button>
-                                    <button class="slds-button_reset slds-text-link slds-col_bump-left"
-                                        onclick={onRemoveAll}>Remove
-                                        All</button>
+                                <div class="slds-filters__footer slds-grid slds-gutters slds-shrink-none">
+                                    <div class="slds-col slds-align_absolute-center">
+                                        <lightning-button variant="brand" label="Apply" onclick={onAddFilter}>
+                                        </lightning-button>
+                                    </div>
+                                    <div class="slds-col slds-align_absolute-center">
+                                        <lightning-button label="Cancel" onclick={onRemoveAll}></lightning-button>
+                                    </div>
                                 </div>
-
                                 <!-- FOOTER CODE     START-->
                             </div>
                         </div>
