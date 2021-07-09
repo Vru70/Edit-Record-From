@@ -11,6 +11,7 @@
                     style="background-color:#fafaf9;position:relative;height:600px;overflow:hidden;display:flex;flex-direction:row-reverse">
                     <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-panel_drawer slds-is-open"
                         aria-hidden="false" id="example-unique-id-72">
+                        <!-- CLOSE BUTTON     START-->
                         <div class="slds-panel__header">
                             <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Filter">
                                 Filter</h2>
@@ -20,22 +21,24 @@
                                 </lightning-button-icon>
                             </div>
                         </div>
+                        <!-- CLOSE BUTTON     END-->
                         <div class="slds-panel__body">
                             <div class="slds-filters">
+                                <!-- FILTER CODE     START-->
                                 <ol class="slds-list_vertical slds-list_vertical-space">
                                     <li class="slds-item slds-hint-parent">
                                         <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
                                             <button class="slds-button_reset slds-grow slds-has-blur-focus">
                                                 <span class="slds-assistive-text">Edit filter:</span>
                                                 <span class="slds-show slds-text-body_small">Show Me</span>
-                                                <span class="slds-show">All Records</span>
+                                                <span class="slds-show">All Products</span>
                                             </button>
                                         </div>
                                     </li>
                                 </ol>
                                 <h3 class="slds-text-body_small slds-var-m-vertical_x-small">Matching all these filters
                                 </h3>
-                                <ol class="slds-list_vertical slds-list_vertical-space">
+                                <ul class="slds-list_vertical slds-list_vertical-space">
                                     <li class="slds-item slds-hint-parent">
                                         <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
                                             <button class="slds-button_reset slds-grow slds-has-blur-focus">
@@ -43,12 +46,16 @@
                                                 <span class="slds-show slds-text-body_small">Created Date</span>
                                                 <span class="slds-show">equals THIS WEEK</span>
                                             </button>
-                                            <lightning-button-icon
+                                            <button
                                                 class="slds-button slds-button_icon slds-button_icon slds-button_icon-small"
-                                                icon-name="utility:delete" title="Remove equals THIS WEEK">
-                                                <span class="slds-assistive-text">Remove filter: List Price greater than
-                                                    &quot;500&quot;</span>
-                                            </lightning-button-icon>
+                                                title="Remove equals THIS WEEK">
+                                                <lightning-button-icon icon-name="utility:delete"
+                                                    alternative-text="Delete" class="slds-var-m-left_xx-small"
+                                                    title="Delete">
+                                                </lightning-button-icon>
+                                                <span class="slds-assistive-text">Remove filter: Created Date equals
+                                                    THIS WEEK</span>
+                                            </button>
                                         </div>
                                     </li>
                                     <li class="slds-item slds-hint-parent">
@@ -58,20 +65,48 @@
                                                 <span class="slds-show slds-text-body_small">List Price</span>
                                                 <span class="slds-show">greater than &quot;500&quot;</span>
                                             </button>
-                                            <lightning-button-icon
+                                            <button
                                                 class="slds-button slds-button_icon slds-button_icon slds-button_icon-small"
-                                                icon-name="utility:delete" title="Remove greater than &quot;500&quot;">
+                                                title="Remove greater than &quot;500&quot;">
+                                                <lightning-button-icon icon-name="utility:delete"
+                                                    alternative-text="Delete" class="slds-var-m-left_xx-small"
+                                                    title="Delete">
+                                                </lightning-button-icon>
                                                 <span class="slds-assistive-text">Remove filter: List Price greater than
                                                     &quot;500&quot;</span>
-                                            </lightning-button-icon>
+                                            </button>
                                         </div>
                                     </li>
-                                </ol>
+                                    <li class="slds-item slds-hint-parent">
+                                        <div
+                                            class="slds-filters__item slds-grid slds-grid_vertical-align-center slds-is-new">
+                                            <button class="slds-button_reset slds-grow slds-has-blur-focus">
+                                                <span class="slds-assistive-text">Edit filter:</span>
+                                                <span class="slds-show">New Filter</span>
+                                            </button>
+                                            <button
+                                                class="slds-button slds-button_icon slds-button_icon slds-button_icon-small"
+                                                title="Remove New Filter">
+                                                <lightning-button-icon icon-name="utility:delete"
+                                                    alternative-text="Delete" class="slds-var-m-left_xx-small"
+                                                    title="Delete">
+                                                </lightning-button-icon>
+                                                <span class="slds-assistive-text">Remove filter: New Filter</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- FILTER CODE     END-->
+                                <!-- FOOTER CODE     START-->
                                 <div class="slds-filters__footer slds-grid slds-shrink-none">
-                                    <button class="slds-button_reset slds-text-link">Add Filter</button>
-                                    <button class="slds-button_reset slds-text-link slds-col_bump-left">Remove
+                                    <button class="slds-button_reset slds-text-link" onclick={onAddFilter}>Add
+                                        Filter</button>
+                                    <button class="slds-button_reset slds-text-link slds-col_bump-left"
+                                        onclick={onRemoveAll}>Remove
                                         All</button>
                                 </div>
+                                
+                                <!-- FOOTER CODE     START-->
                             </div>
                         </div>
                     </div>
