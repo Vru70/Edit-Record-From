@@ -9,6 +9,14 @@ export default class Filter extends LightningElement {
     isValueDisabled = true;
 
     valueType = 'text';
+
+    filterCriteriaList = [
+        { id: 1, resource: 'Resource1', operator: 'Operator1', value: 'Value1' },
+        { id: 2, resource: 'Resource2', operator: 'Operator2', value: 'Value2' },
+        { id: 3, resource: 'Resource3', operator: 'Operator3', value: 'Value3' },
+        { id: 4, resource: 'Resource4', operator: 'Operator4', value: 'Value4' }
+    ];
+
     get resourceOptions() {
         return [
             { label: 'Resource1', value: 'Resource1', type: 'text' },
@@ -35,6 +43,12 @@ export default class Filter extends LightningElement {
         if (event.target.value != null) {
             this.isValueDisabled = false;
         }
+        if (event.target.value == 'Operator2') {
+            this.isValueDisabled = false;
+            this.valueType = 'date';
+        } else {
+            this.valueType = 'text';
+        }
     }
 
     onChangeValue(event) {
@@ -49,5 +63,17 @@ export default class Filter extends LightningElement {
         this.filterState = false;
     }
 
+    deleteFilter() {
 
+    }
+
+    onAddFilter() // onclick Button
+    {
+
+    }
+
+    onRemoveAll() // onclick Button
+    {
+
+    }
 }
