@@ -56,24 +56,28 @@
                                 <h3 class="slds-text-body_small slds-var-m-vertical_x-small">Matching all these filters
                                 </h3>
                                 <!-- FOR EACH CODE     START-->
-                                <ul class="slds-list_vertical slds-list_vertical-space slds-scrollable_y">
-                                    <template if:true={filterCriteriaList} for:each={filterCriteriaList}
-                                        for:item="filter">
-                                        <li class="slds-item slds-hint-parent" key={filter.Id}>
-                                            <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
-                                                <div class="slds-grow slds-has-blur-focus">
-                                                    <span class="slds-show">{filter.resource}:</span>
-                                                    <span class="slds-show">{filter.operator}</span>
-                                                    <span class="slds-show">{filter.value}</span>
+                                <div class="slds-scrollable">
+                                    <ul class="slds-list_vertical slds-list_vertical-space ">
+                                        <template if:true={filterCriteriaList} for:each={filterCriteriaList}
+                                            for:item="filter">
+                                            <li class="slds-item slds-hint-parent" key={filter.Id}>
+                                                <div
+                                                    class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+                                                    <div class="slds-grow slds-has-blur-focus">
+                                                        <span class="slds-show">{filter.resource}:</span>
+                                                        <span class="slds-show">{filter.operator}</span>
+                                                        <span class="slds-show">{filter.value}</span>
+                                                    </div>
+                                                    <lightning-button-icon icon-name="utility:delete"
+                                                        alternative-text="Delete" class="slds-var-m-left_xx-small"
+                                                        onclick={deleteFilter} title="Delete">
+                                                    </lightning-button-icon>
                                                 </div>
-                                                <lightning-button-icon icon-name="utility:delete"
-                                                    alternative-text="Delete" class="slds-var-m-left_xx-small"
-                                                    onclick={deleteFilter} title="Delete">
-                                                </lightning-button-icon>
-                                            </div>
-                                        </li>
-                                    </template>
-                                </ul>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+
                                 <!-- FOR EACH CODE     END-->
                                 <!-- FILTER CODE     END-->
                                 <!-- FOOTER CODE     START-->
