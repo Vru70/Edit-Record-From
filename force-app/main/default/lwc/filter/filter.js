@@ -12,9 +12,8 @@ export default class Filter extends LightningElement {
 
     filterCriteriaList = [
         { id: 1, resource: 'Resource1', operator: 'Operator1', value: 'Value1' },
-        { id: 2, resource: 'Resource2', operator: 'Operator2', value: 'Value2' },
-        { id: 3, resource: 'Resource3', operator: 'Operator3', value: 'Value3' },
-        { id: 4, resource: 'Resource4', operator: 'Operator4', value: 'Value4' }
+        { id: 2, resource: 'Resource2', operator: 'Operator2', value: 'Value2' }
+
     ];
 
     get resourceOptions() {
@@ -63,8 +62,8 @@ export default class Filter extends LightningElement {
         this.filterState = false;
     }
 
-    deleteFilter() {
-
+    deleteFilter(event) {
+        console.log('ID:', JSON.stringify(event.target.id));
     }
 
     onAddFilter() // onclick Button
