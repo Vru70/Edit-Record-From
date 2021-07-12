@@ -5,18 +5,18 @@ export default class Filter extends LightningElement {
     @api filedsList; // list fields with data-types
     @track filterState = false; // toggle Button
 
+    @track resourceValue;
+    @track operatorValue;
+    @track userInputSearchValue;
+
     isOperatorDisabled = true;
     isValueDisabled = true;
 
     valueType = 'text';
 
-    filterCriteriaList = [
-        { id: 1, resource: 'Resource1', operator: 'Operator1', value: 'Value1' },
-        { id: 2, resource: 'Resource2', operator: 'Operator2', value: 'Value2' }
+    @track filterCriteriaList = [];// Filter values
 
-    ];
-
-    get resourceOptions() {
+    get resourceOptions() { //Resource == DataTable Column values
         return [
             { label: 'Resource1', value: 'Resource1', type: 'text' },
             { label: 'Resource3', value: 'Resource3', type: 'number' },
@@ -24,7 +24,7 @@ export default class Filter extends LightningElement {
         ];
     }
 
-    get operatorOptions() {
+    get operatorOptions() { //Operator eg, Starts With , end with , lessthan  etc
         return [
             { label: 'Operator1', value: 'Operator1', type: 'text' },
             { label: 'Operator3', value: 'Operator3', type: 'number' },
@@ -36,6 +36,8 @@ export default class Filter extends LightningElement {
         if (event.target.value != null) {
             this.isOperatorDisabled = false;
         }
+        this.resourceValue = event.target.value;
+        console.log('this.resourceValue:', JSON.stringify(this.resourceValue));
     }
 
     handleOperatorChange(event) {
@@ -48,10 +50,13 @@ export default class Filter extends LightningElement {
         } else {
             this.valueType = 'text';
         }
+        this.operatorValue = event.target.value;
+        console.log('this.operatorValue:', JSON.stringify(this.operatorValue));
     }
 
-    onChangeValue(event) {
-        console.log('Value:', JSON.stringify(event.target.value));
+    onChangeInputValue(event) {
+        this.userInputSearchValue = event.target.value
+        console.log('Value:', JSON.parse(JSON.stringify(this.userInputSearchValue)));
     }
 
     handleFilter() { // toggle Button Function
@@ -63,16 +68,41 @@ export default class Filter extends LightningElement {
     }
 
     deleteFilter(event) {
-        console.log('ID:', JSON.stringify(event.target.id));
+        let idToDelete = event.target.name;
+        console.log('ID:', JSON.stringify(idToDelete));
+        let filterCriteriaList = this.filterCriteriaList;
+        let filterCriteriaListIndex;
+        for (let i = 0; i < filterCriteriaList.length; i++) {
+            if (idToDelete === filterCriteriaList[i].id) {
+                filterCriteriaListIndex = i;
+                console.log('index value:', filterCriteriaListIndex);
+            }
+        }
+        filterCriteriaList.splice(filterCriteriaListIndex, 1);
+        console.log('list after splicing', filterCriteriaList);
+        console.log('delete handler called');
     }
 
     onAddFilter() // onclick Button
     {
+        let filterVlaues = {};
+        filterVlaues.id = this.idHandler();
+        filterVlaues.resource = this.resourceValue;
+        filterVlaues.operator = this.operatorValue;
+        filterVlaues.value = this.userInputSearchValue;
+        this.filterCriteriaList.push(filterVlaues);
+        console.log('this.filterCriteriaList:', this.filterCriteriaList);
 
+    }
+
+    idHandler() {
+        let len = this.filterCriteriaList.length;
+        console.log('len:', len);
+        return len + 1;
     }
 
     onRemoveAll() // onclick Button
     {
-
+        this.filterCriteriaList = [];
     }
 }
