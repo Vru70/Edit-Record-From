@@ -1,5 +1,5 @@
 <template>
-    <div class="slds-var-p-left_x-small">
+    <div class="slds-var-p-left_xx-small">
         <lightning-button-icon-stateful icon-name="utility:filterList" selected={filterState} onclick={handleFilter}
             alternative-text="Filter">
         </lightning-button-icon-stateful>
@@ -39,7 +39,7 @@
                                     </div>
                                     <div class="slds-col">
                                         <lightning-input type={valueType} variant="standard" name="Value"
-                                            disabled={isValueDisabled} label="Value" onchange={onChangeValue}>
+                                            disabled={isValueDisabled} label="Value" onchange={onChangeInputValue}>
                                         </lightning-input>
                                     </div>
                                     <div class="slds-col slds-grid slds-gutters slds-var-p-top_small">
@@ -68,7 +68,7 @@
                                                         <span class="slds-show">{filter.operator}</span>
                                                         <span class="slds-show">{filter.value}</span>
                                                     </div>
-                                                    <lightning-button-icon icon-name="utility:delete"
+                                                    <lightning-button-icon icon-name="utility:delete" name={filter.id}
                                                         alternative-text="Delete" class="slds-var-m-left_xx-small"
                                                         onclick={deleteFilter} title="Delete">
                                                     </lightning-button-icon>
