@@ -104,7 +104,8 @@ export default class SearchReplace_datatable extends LightningElement {
                     } else {
                         items = [...items, {
                             label: element.label,
-                            fieldName: element.fieldPath
+                            fieldName: element.fieldPath,
+                            type: element.type
                         }];
                     }
                     // fileds for ComboBox
