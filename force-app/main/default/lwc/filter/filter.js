@@ -3,6 +3,7 @@ import { LightningElement, api, track } from 'lwc';
 export default class Filter extends LightningElement {
     @api alldata; // column data
     @api filedsList; // list fields with data-types
+
     @track filterState = false; // toggle Button
 
     @track resourceValue;
@@ -16,12 +17,12 @@ export default class Filter extends LightningElement {
 
     @track filterCriteriaList = [];// Filter values
 
+    connectedCallback() {
+        console.log('filedsList:', this.filedsList);
+    }
+
     get resourceOptions() { //Resource == DataTable Column values
-        return [
-            { label: 'Resource1', value: 'Resource1', type: 'text' },
-            { label: 'Resource3', value: 'Resource3', type: 'number' },
-            { label: 'Resource2', value: 'Resource2', type: 'date' },
-        ];
+        return this.filedsList;
     }
 
     get operatorOptions() { //Operator eg, Starts With , end with , lessthan  etc
@@ -103,6 +104,11 @@ export default class Filter extends LightningElement {
     onRemoveAll() // onclick Button
     {
         this.filterCriteriaList = [];
+    }
+    
+    getValueType()
+    {
+
     }
 
     resetDefValues() {
