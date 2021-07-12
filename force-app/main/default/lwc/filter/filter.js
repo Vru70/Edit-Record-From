@@ -92,7 +92,6 @@ export default class Filter extends LightningElement {
         filterVlaues.value = this.userInputSearchValue;
         this.filterCriteriaList.push(filterVlaues);
         console.log('this.filterCriteriaList:', this.filterCriteriaList);
-
     }
 
     idHandler() {
@@ -105,4 +104,22 @@ export default class Filter extends LightningElement {
     {
         this.filterCriteriaList = [];
     }
+
+    resetDefValues() {
+        // diable drop box
+        this.isOperatorDisabled = true;
+        this.isValueDisabled = true;
+
+        // clear all value
+        this.resourceValue = null;
+        this.operatorValue = null;
+        this.userInputSearchValue = null;
+
+
+    }
+
+    disableBoxOpt() {
+
+    }
+
 }
