@@ -56,8 +56,7 @@
                                 <h3 class="slds-text-body_small slds-var-m-vertical_x-small">Matching all these filters
                                 </h3>
                                 <!-- FOR EACH CODE     START-->
-                                <div class="slds-scrollable">
-                                    <ul class="slds-list_vertical slds-list_vertical-space ">
+                                    <ul class="slds-list_vertical slds-list_vertical-space slds-scrollable_y">
                                         <template if:true={filterCriteriaList} for:each={filterCriteriaList}
                                             for:item="filter">
                                             <li class="slds-item slds-hint-parent" key={filter.Id}>
@@ -76,7 +75,6 @@
                                             </li>
                                         </template>
                                     </ul>
-                                </div>
                                 <!-- FOR EACH CODE     END-->
                                 <!-- FILTER CODE     END-->
                             </div>
