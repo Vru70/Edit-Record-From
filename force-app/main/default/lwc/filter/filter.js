@@ -1,7 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 
 export default class Filter extends LightningElement {
-    @api alldata; // column data
+
+    @api filterCriteriaList = [];// Filter values 
     @api filedsList; // list fields with data-types 
     //eg. { label: "Account Name", fieldName: "Name", type: "string" }
 
@@ -17,7 +18,7 @@ export default class Filter extends LightningElement {
     isOperatorDisabled = true;
     isValueDisabled = true;
 
-    @track filterCriteriaList = [];// Filter values 
+
 
     // operatorOptions
     operatorOption = []; // Actualy return by get method
@@ -125,6 +126,7 @@ export default class Filter extends LightningElement {
         filterCriteriaList.splice(filterCriteriaListIndex, 1);
         console.log('list after splicing', filterCriteriaList);
         console.log('delete handler called');
+        this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
     }
 
     onAddFilter() // onclick Button
@@ -139,6 +141,8 @@ export default class Filter extends LightningElement {
         filterVlaues.value = this.userInputSearchValue;
         this.filterCriteriaList.push(filterVlaues);
         console.log('this.filterCriteriaList:', this.filterCriteriaList);
+
+        this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
     }
 
     idHandler() {
@@ -150,6 +154,7 @@ export default class Filter extends LightningElement {
     onRemoveAll() // onclick Button
     {
         this.filterCriteriaList = [];
+        this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
     }
 
     getValueType() {
@@ -181,4 +186,13 @@ export default class Filter extends LightningElement {
         console.log('event.Target.dataset.id:', event.target.dataset.id);
     }
 
+    handlefilterCriteriaListChange() {
+        // Creates the event with the data.
+        const selectedEvent = new CustomEvent("filtercriteriachange", {
+            detail: this.filterCriteriaList
+        });
+
+        // Dispatches the event.
+        this.dispatchEvent(selectedEvent);
+    }
 }
