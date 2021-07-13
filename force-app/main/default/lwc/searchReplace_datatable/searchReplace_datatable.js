@@ -36,6 +36,8 @@ export default class SearchReplace_datatable extends LightningElement {
 
     fieldnames = []; // list of field names
 
+    @track filterCriteriaList; // collecting from child
+
     connectedCallback() {
         getFieldsAndRecords({
             strObjectApiName: this.SFDCobjectApiName,
@@ -244,17 +246,10 @@ export default class SearchReplace_datatable extends LightningElement {
         this.fieldType = dataType.type;
         console.log(' this.fieldType: ' + dataType.type);
     }
-
-    handleFilter() {
-        this.filterState = !this.filterState;
-    }
-
-    closePopover() {
-        this.filterState = false;
-    }
-
-    handleApply() {
-
+    
+    filterCriteriaChange(event) {
+        this.filterCriteriaList = event.detail;
+        console.log('this.filterCriteriaList:', JSON.stringify(this.filterCriteriaList));
     }
 
 }
