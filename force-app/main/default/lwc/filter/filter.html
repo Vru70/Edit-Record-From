@@ -64,8 +64,9 @@
                                             onclick={onEditFilter}>
                                             <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
                                                 <div class="slds-grow slds-has-blur-focus">
-                                                    <span class="slds-show">{filter.resource}:</span>
-                                                    <span class="slds-show">{filter.operator}</span>
+                                                    <span
+                                                        class="slds-show slds-text-color_success">{filter.resourceName}:</span>
+                                                    <span class="slds-show">{filter.operatorName}</span>
                                                     <span class="slds-show">{filter.value}</span>
                                                 </div>
                                                 <lightning-button-icon icon-name="utility:delete" name={filter.id}
