@@ -9,6 +9,8 @@ export default class Filter extends LightningElement {
 
     @track resourceValue;
     @track operatorValue;
+    @track resourceName;
+    @track operatorName;
     @track userInputSearchValue;
     @track valueType; // eg, text , date ,email,etc
 
@@ -75,7 +77,9 @@ export default class Filter extends LightningElement {
             this.isOperatorDisabled = false;
         }
         this.resourceValue = event.target.value;
+        this.resourceName = this.filedsList.find(opt => opt.value === event.target.value).label;
         console.log('this.resourceValue:', JSON.stringify(this.resourceValue));
+        console.log('this.resourceName:', JSON.stringify(this.resourceName));
         this.getValueType();
     }
 
@@ -90,6 +94,7 @@ export default class Filter extends LightningElement {
             this.valueType = 'text';
         }
         this.operatorValue = event.target.value;
+        this.operatorName = this.operatorOption.find(opt => opt.value === event.target.value).label;
         console.log('this.operatorValue:', JSON.stringify(this.operatorValue));
     }
 
@@ -129,6 +134,8 @@ export default class Filter extends LightningElement {
         filterVlaues.id = this.idHandler();
         filterVlaues.resource = this.resourceValue;
         filterVlaues.operator = this.operatorValue;
+        filterVlaues.resourceName = this.resourceName;
+        filterVlaues.operatorName = this.operatorName;
         filterVlaues.value = this.userInputSearchValue;
         this.filterCriteriaList.push(filterVlaues);
         console.log('this.filterCriteriaList:', this.filterCriteriaList);
