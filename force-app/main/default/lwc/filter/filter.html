@@ -60,7 +60,8 @@
                                     style="height:16rem">
                                     <template if:true={filterCriteriaList} for:each={filterCriteriaList}
                                         for:item="filter">
-                                        <li class="slds-item slds-hint-parent" key={filter.Id}>
+                                        <li class="slds-item slds-hint-parent" key={filter.id} id={filter.id}
+                                            onclick={onEditFilter}>
                                             <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
                                                 <div class="slds-grow slds-has-blur-focus">
                                                     <span class="slds-show">{filter.resource}:</span>
