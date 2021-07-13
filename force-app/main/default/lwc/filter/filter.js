@@ -2,23 +2,33 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class Filter extends LightningElement {
     @api alldata; // column data
-    @api filedsList; // list fields with data-types
+    @api filedsList; // list fields with data-types 
+    //eg. { label: "Account Name", fieldName: "Name", type: "string" }
 
     @track filterState = false; // toggle Button
 
     @track resourceValue;
     @track operatorValue;
     @track userInputSearchValue;
+    @track valueType; // eg, text , date ,email,etc
 
     isOperatorDisabled = true;
     isValueDisabled = true;
 
-    valueType = 'text';
+    @track filterCriteriaList = [];// Filter values 
 
-    @track filterCriteriaList = [];// Filter values
+    // operatorOptions
+    operatorOption = []; // Actualy return by get method
+    stringOption = [
+        { label: 'equals', value: 'equals' },
+        { label: 'not equal to', value: 'notequalto' },
+        { label: 'contains', value: 'contains' },
+        { label: 'starts with', value: 'startswith' },
+        { label: 'ends with', value: 'endswith' }
+    ];
 
     connectedCallback() {
-        console.log('filedsList:', this.filedsList);
+        console.log('filedsList:', JSON.parse(JSON.stringify(this.filedsList)));
     }
 
     get resourceOptions() { //Resource == DataTable Column values
@@ -26,11 +36,38 @@ export default class Filter extends LightningElement {
     }
 
     get operatorOptions() { //Operator eg, Starts With , end with , lessthan  etc
-        return [
-            { label: 'Operator1', value: 'Operator1', type: 'text' },
-            { label: 'Operator3', value: 'Operator3', type: 'number' },
-            { label: 'Operator2', value: 'Operator2', type: 'date' },
-        ];
+        switch (this.valueType) {
+            case 'string':
+            case 'url':
+            case 'email':
+                this.operatorOption = this.stringOption;
+                break;
+            case 'double':
+                alert('This is double');
+                break;
+            case 'picklist':
+                alert('This is picklist');
+                break;
+            case 'datetime':
+                alert('This is datetime');
+                break;
+            case 'time':
+                alert('This is time');
+                break;
+            case 'date':
+                alert('This is date');
+                break;
+            case 'currency':
+                alert('This is currency');
+                break;
+            case 'phone':
+                alert('This is phone');
+                break;
+            default:
+                this.operatorOption = this.stringOption;
+                break;
+        }
+        return this.operatorOption;
     }
 
     handleResourceChange(event) {
@@ -39,6 +76,7 @@ export default class Filter extends LightningElement {
         }
         this.resourceValue = event.target.value;
         console.log('this.resourceValue:', JSON.stringify(this.resourceValue));
+        this.getValueType();
     }
 
     handleOperatorChange(event) {
@@ -86,6 +124,7 @@ export default class Filter extends LightningElement {
 
     onAddFilter() // onclick Button
     {
+        // adding component to filterCriteriaList list
         let filterVlaues = {};
         filterVlaues.id = this.idHandler();
         filterVlaues.resource = this.resourceValue;
@@ -105,10 +144,11 @@ export default class Filter extends LightningElement {
     {
         this.filterCriteriaList = [];
     }
-    
-    getValueType()
-    {
 
+    getValueType() {
+        let field = this.filedsList.filter(key => key.value === this.resourceValue);
+        let dataType = JSON.parse(JSON.stringify(field[0]));
+        this.valueType = dataType.type;
     }
 
     resetDefValues() {
@@ -120,12 +160,18 @@ export default class Filter extends LightningElement {
         this.resourceValue = null;
         this.operatorValue = null;
         this.userInputSearchValue = null;
-
-
     }
 
     disableBoxOpt() {
 
+    }
+
+    onEditFilter(event) // will edit added condition from List
+    {
+        console.log('event.currentTarget.id:', event.currentTarget.id);
+        console.log('event.currentTarget.dataset.id:', event.currentTarget.dataset.id);
+        console.log('event.Target.id:', event.target.id);
+        console.log('event.Target.dataset.id:', event.target.dataset.id);
     }
 
 }
