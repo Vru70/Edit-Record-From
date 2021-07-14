@@ -88,19 +88,15 @@ export default class Filter extends LightningElement {
         if (event.target.value != null) {
             this.isValueDisabled = false;
         }
-        if (event.target.value == 'Operator2') {
-            this.isValueDisabled = false;
-            this.valueType = 'date';
-        } else {
-            this.valueType = 'text';
-        }
+
         this.operatorValue = event.target.value;
         this.operatorName = this.operatorOption.find(opt => opt.value === event.target.value).label;
         console.log('this.operatorValue:', JSON.stringify(this.operatorValue));
     }
 
     onChangeInputValue(event) {
-        this.userInputSearchValue = event.target.value
+        let temp = event.target.value;
+        this.userInputSearchValue = temp.toLowerCase();
         console.log('Value:', JSON.parse(JSON.stringify(this.userInputSearchValue)));
     }
 
