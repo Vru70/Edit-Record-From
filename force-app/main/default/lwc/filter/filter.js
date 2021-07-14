@@ -2,7 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class Filter extends LightningElement {
 
-    @api filterCriteriaList = [];// Filter values 
+    @track filterCriteriaList = [];// Filter values 
     @api filedsList; // list fields with data-types 
     //eg. { label: "Account Name", fieldName: "Name", type: "string" }
 
@@ -18,7 +18,7 @@ export default class Filter extends LightningElement {
     isOperatorDisabled = true;
     isValueDisabled = true;
 
-
+    trackFielterId = 0;
 
     // operatorOptions
     operatorOption = []; // Actualy return by get method
@@ -129,7 +129,7 @@ export default class Filter extends LightningElement {
     {
         // adding component to filterCriteriaList list
         let filterVlaues = {};
-        filterVlaues.id = this.idHandler();
+        filterVlaues.id = this.trackFielterId + 1;
         filterVlaues.resource = this.resourceValue;
         filterVlaues.operator = this.operatorValue;
         filterVlaues.resourceName = this.resourceName;
@@ -139,12 +139,6 @@ export default class Filter extends LightningElement {
         console.log('this.filterCriteriaList:', this.filterCriteriaList);
 
         this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
-    }
-
-    idHandler() {
-        let len = this.filterCriteriaList.length;
-        console.log('len:', len);
-        return len + 1;
     }
 
     onRemoveAll() // onclick Button
