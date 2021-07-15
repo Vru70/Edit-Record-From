@@ -246,23 +246,54 @@ export default class SearchReplace_datatable extends LightningElement {
     }
 
     filterCriteriaChange(event) {
-
         var filterCriteriaList = (JSON.parse(JSON.stringify(event.detail)));
         console.table(JSON.parse(JSON.stringify(filterCriteriaList)));
         /*
         {"id":1,"resource":"Name","operator":"equals","resourceName":"Account Name","operatorName":"equals","value":"Test"}
         */
-
         var allRecords = this.allDataOrgCopy;
-        var searchResults = [];
+        var filterResults = [];
 
         filterCriteriaList.forEach(filterCriteria => {
-            if (filterCriteria.operator === 'equals') {
-                searchResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
-                this.allData = searchResults;
-                console.table(searchResults);
+            switch (filterCriteria.operator) {
+                case 'equals':
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
+                    this.allData = filterResults;
+                    break;
+
+                case 'notEquals':
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource] != filterCriteria.value);
+                    this.allData = filterResults;
+                    break;
+
+                case 'endsWith':
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource].endsWith(filterCriteria.value));
+                    this.allData = filterResults;
+                    break;
+
+                case 'startsWith':
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource].startsWithb(filterCriteria.value));
+                    this.allData = filterResults;
+                    break;
+
+                case 'empty':
+                    filterResults = allRecords.filter(key => {
+                        key[filterCriteria.resource] == 'undefined' ||
+                            key[filterCriteria.resource] == null ||
+                            key[filterCriteria.resource].length <= 0;
+
+                    });
+                    this.allData = filterResults;
+                    break;
+
+                case 'contains': includes
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource].includes(filterCriteria.value));
+                    this.allData = filterResults;
+                    break;
+                default:
+                    break;
             }
-            
+
         });
     }
 
