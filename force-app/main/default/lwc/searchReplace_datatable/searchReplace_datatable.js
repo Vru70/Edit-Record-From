@@ -36,8 +36,6 @@ export default class SearchReplace_datatable extends LightningElement {
 
     fieldnames = []; // list of field names
 
-    @track filterCriteriaList; // collecting from child
-
     connectedCallback() {
         getFieldsAndRecords({
             strObjectApiName: this.SFDCobjectApiName,
@@ -246,10 +244,26 @@ export default class SearchReplace_datatable extends LightningElement {
         this.fieldType = dataType.type;
         console.log(' this.fieldType: ' + dataType.type);
     }
-    
+
     filterCriteriaChange(event) {
-        this.filterCriteriaList = event.detail;
-        console.log('this.filterCriteriaList:', JSON.stringify(this.filterCriteriaList));
+
+        var filterCriteriaList = (JSON.parse(JSON.stringify(event.detail)));
+        console.table(JSON.parse(JSON.stringify(filterCriteriaList)));
+        /*
+        {"id":1,"resource":"Name","operator":"equals","resourceName":"Account Name","operatorName":"equals","value":"Test"}
+        */
+
+        var allRecords = this.allDataOrgCopy;
+        var searchResults = [];
+
+        filterCriteriaList.forEach(filterCriteria => {
+            if (filterCriteria.operator === 'equals') {
+                searchResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
+                this.allData = searchResults;
+                console.table(searchResults);
+            }
+            
+        });
     }
 
 }
