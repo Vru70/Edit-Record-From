@@ -31,10 +31,6 @@ export default class Filter extends LightningElement {
         { label: 'empty', value: 'empty' }
     ];
 
-    connectedCallback() {
-        console.log('filedsList:', JSON.parse(JSON.stringify(this.filedsList)));
-    }
-
     get resourceOptions() { //Resource == DataTable Column values
         return this.filedsList;
     }
@@ -122,7 +118,6 @@ export default class Filter extends LightningElement {
         }
         filterCriteriaList.splice(filterCriteriaListIndex, 1);
         console.log('list after splicing', filterCriteriaList);
-        console.log('delete handler called');
         this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
     }
 
@@ -130,15 +125,14 @@ export default class Filter extends LightningElement {
     {
         // adding component to filterCriteriaList list
         let filterVlaues = {};
-        filterVlaues.id = this.trackFielterId + 1;
+        filterVlaues.id = this.trackFielterId;
+        this.trackFielterId++;
         filterVlaues.resource = this.resourceValue;
         filterVlaues.operator = this.operatorValue;
         filterVlaues.resourceName = this.resourceName;
         filterVlaues.operatorName = this.operatorName;
         filterVlaues.value = this.userInputSearchValue;
         this.filterCriteriaList.push(filterVlaues);
-        console.log('this.filterCriteriaList:', this.filterCriteriaList);
-
         this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
     }
 
@@ -178,14 +172,11 @@ export default class Filter extends LightningElement {
     }
 
     handlefilterCriteriaListChange() {
-        console.log('inside handlefilterCriteriaListChange');
         // Creates the event with the data.
         const selectedEvent = new CustomEvent("filtercriteriachange", {
             detail: this.filterCriteriaList
         });
-
-        //.
         this.dispatchEvent(selectedEvent);
-        console.log(' Dispatches the event');
+        console.log('handlefilterCriteriaListChange Dispatches the event');
     }
 }
