@@ -177,12 +177,14 @@ export default class Filter extends LightningElement {
     }
 
     handlefilterCriteriaListChange() {
+        console.log('inside handlefilterCriteriaListChange');
         // Creates the event with the data.
         const selectedEvent = new CustomEvent("filtercriteriachange", {
             detail: this.filterCriteriaList
         });
 
-        // Dispatches the event.
+        //.
         this.dispatchEvent(selectedEvent);
+        console.log(' Dispatches the event');
     }
 }
