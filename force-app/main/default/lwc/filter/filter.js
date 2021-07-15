@@ -24,10 +24,11 @@ export default class Filter extends LightningElement {
     operatorOption = []; // Actualy return by get method
     stringOption = [
         { label: 'equals', value: 'equals' },
-        { label: 'not equal to', value: 'notequalto' },
+        { label: 'not equals', value: 'notEquals' },
         { label: 'contains', value: 'contains' },
-        { label: 'starts with', value: 'startswith' },
-        { label: 'ends with', value: 'endswith' }
+        { label: 'starts with', value: 'startsWith' },
+        { label: 'ends with', value: 'endsWith' },
+        { label: 'empty', value: 'empty' }
     ];
 
     connectedCallback() {
@@ -96,7 +97,7 @@ export default class Filter extends LightningElement {
 
     onChangeInputValue(event) {
         let temp = event.target.value;
-        this.userInputSearchValue = temp.toLowerCase();
+        this.userInputSearchValue = temp;
         console.log('Value:', JSON.parse(JSON.stringify(this.userInputSearchValue)));
     }
 
