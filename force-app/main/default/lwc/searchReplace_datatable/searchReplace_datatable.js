@@ -246,14 +246,14 @@ export default class SearchReplace_datatable extends LightningElement {
     }
 
     filterCriteriaChange(event) {
+
         var filterCriteriaList = (JSON.parse(JSON.stringify(event.detail)));
         console.table(JSON.parse(JSON.stringify(filterCriteriaList)));
-        /*
-        {"id":1,"resource":"Name","operator":"equals","resourceName":"Account Name","operatorName":"equals","value":"Test"}
-        */
         var allRecords = this.allDataOrgCopy;
         var filterResults = [];
-
+        if (filterCriteriaList.length == 0) {
+            this.allRecords = this.allDataOrgCopy;
+        }
         filterCriteriaList.forEach(filterCriteria => {
             switch (filterCriteria.operator) {
                 case 'equals':
@@ -272,7 +272,7 @@ export default class SearchReplace_datatable extends LightningElement {
                     break;
 
                 case 'startsWith':
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource].startsWithb(filterCriteria.value));
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource].startsWith(filterCriteria.value));
                     this.allData = filterResults;
                     break;
 
@@ -286,10 +286,11 @@ export default class SearchReplace_datatable extends LightningElement {
                     this.allData = filterResults;
                     break;
 
-                case 'contains': includes
+                case 'contains':
                     filterResults = allRecords.filter(key => key[filterCriteria.resource].includes(filterCriteria.value));
                     this.allData = filterResults;
                     break;
+
                 default:
                     break;
             }
