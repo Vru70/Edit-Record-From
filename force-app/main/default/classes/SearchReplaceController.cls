@@ -26,7 +26,7 @@ public class SearchReplaceController
                 query += f.getFieldPath() + ', '; // getFieldPath() of FieldSetMember gives the fieldAPI which has been used to build SOQL query.
             }
             query += 'Id FROM ' + strObjectApiName ;
-            query += ' LIMIT 20 '; 
+            query += ' LIMIT 50 '; 
         
 	        //execute query
             List<SObject> lstRecords = Database.query(query);
