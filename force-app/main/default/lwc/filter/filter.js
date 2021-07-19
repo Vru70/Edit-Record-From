@@ -31,6 +31,21 @@ export default class Filter extends LightningElement {
         { label: 'empty', value: 'empty' }
     ];
 
+    doubleOption = [
+        { label: 'equals', value: 'equals' },
+        { label: 'not equals', value: 'notEquals' },
+        { label: 'less than', value: 'lessThan' },
+        { label: 'greater than', value: 'greaterThan' },
+        { label: 'less or equal', value: 'lessOrEqual' },
+        { label: 'greater or equal', value: 'greaterOrEqual' }
+    ];
+
+    dateOption = [
+        { label: 'all time', value: 'allTime' },
+        { label: 'custom', value: 'custom' },
+        { label: 'equals', value: 'equals' }
+    ];
+
     get resourceOptions() { //Resource == DataTable Column values
         return this.filedsList;
     }
@@ -40,29 +55,26 @@ export default class Filter extends LightningElement {
             case 'string':
             case 'url':
             case 'email':
+            case 'picklist':
                 this.operatorOption = this.stringOption;
                 break;
+
+            case 'currency':
+            case 'phone':
             case 'double':
-                alert('This is double');
+                this.operatorOption = this.doubleOption;
                 break;
-            case 'picklist':
-                alert('This is picklist');
-                break;
+
             case 'datetime':
-                alert('This is datetime');
+                this.operatorOption = this.dateOption;
                 break;
             case 'time':
-                alert('This is time');
+                this.operatorOption = this.dateOption;
                 break;
             case 'date':
-                alert('This is date');
+                this.operatorOption = this.dateOption;
                 break;
-            case 'currency':
-                alert('This is currency');
-                break;
-            case 'phone':
-                alert('This is phone');
-                break;
+
             default:
                 this.operatorOption = this.stringOption;
                 break;
