@@ -43,7 +43,7 @@ export default class Filter extends LightningElement {
     dateOption = [
         { label: 'all time', value: 'allTime' },
         { label: 'custom', value: 'custom' }
-        
+
     ];
 
     get resourceOptions() { //Resource == DataTable Column values
@@ -105,6 +105,10 @@ export default class Filter extends LightningElement {
 
     onChangeInputValue(event) {
         let temp = event.target.value;
+        if (this.valueType == 'double' || this.valueType == 'currency') {
+            this.userInputSearchValue = parseInt(temp);
+        }
+
         this.userInputSearchValue = temp;
         console.log('Value:', JSON.parse(JSON.stringify(this.userInputSearchValue)));
     }
