@@ -258,7 +258,31 @@ export default class SearchReplace_datatable extends LightningElement {
 
         filterCriteriaList.forEach(filterCriteria => {
             switch (filterCriteria.operator) {
+                case 'lessThan':
+                    allRecords = this.allData;
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource] < filterCriteria.value);
+                    this.allData = filterResults;
+                    break;
+
+                case 'greaterThan':
+                    allRecords = this.allData;
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource] > filterCriteria.value);
+                    this.allData = filterResults;
+                    break;
+
+                case 'lessOrEqual':
+                    allRecords = this.allData;
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource] <= filterCriteria.value);
+                    this.allData = filterResults;
+                    break;
+
                 case 'equals':
+                    allRecords = this.allData;
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource] >= filterCriteria.value);
+                    this.allData = filterResults;
+                    break;
+
+                case 'greaterOrEqual':
                     allRecords = this.allData;
                     filterResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
                     this.allData = filterResults;
@@ -287,6 +311,7 @@ export default class SearchReplace_datatable extends LightningElement {
                     filterResults = allRecords.filter(key => {
                         key[filterCriteria.resource] == 'undefined' ||
                             key[filterCriteria.resource] == null ||
+                            key[filterCriteria.resource] == '' ||
                             key[filterCriteria.resource].length <= 0;
 
                     });
@@ -294,6 +319,12 @@ export default class SearchReplace_datatable extends LightningElement {
                     break;
 
                 case 'contains':
+                    allRecords = this.allData;
+                    filterResults = allRecords.filter(key => key[filterCriteria.resource].includes(filterCriteria.value));
+                    this.allData = filterResults;
+                    break;
+
+                case 'custom':
                     allRecords = this.allData;
                     filterResults = allRecords.filter(key => key[filterCriteria.resource].includes(filterCriteria.value));
                     this.allData = filterResults;

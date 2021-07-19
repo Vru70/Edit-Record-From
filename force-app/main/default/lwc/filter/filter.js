@@ -42,8 +42,8 @@ export default class Filter extends LightningElement {
 
     dateOption = [
         { label: 'all time', value: 'allTime' },
-        { label: 'custom', value: 'custom' },
-        { label: 'equals', value: 'equals' }
+        { label: 'custom', value: 'custom' }
+        
     ];
 
     get resourceOptions() { //Resource == DataTable Column values
@@ -56,11 +56,11 @@ export default class Filter extends LightningElement {
             case 'url':
             case 'email':
             case 'picklist':
+            case 'phone':
                 this.operatorOption = this.stringOption;
                 break;
 
             case 'currency':
-            case 'phone':
             case 'double':
                 this.operatorOption = this.doubleOption;
                 break;
@@ -135,17 +135,23 @@ export default class Filter extends LightningElement {
 
     onAddFilter() // onclick Button
     {
-        // adding component to filterCriteriaList list
-        let filterVlaues = {};
-        filterVlaues.id = this.trackFielterId;
-        this.trackFielterId++;
-        filterVlaues.resource = this.resourceValue;
-        filterVlaues.operator = this.operatorValue;
-        filterVlaues.resourceName = this.resourceName;
-        filterVlaues.operatorName = this.operatorName;
-        filterVlaues.value = this.userInputSearchValue;
-        this.filterCriteriaList.push(filterVlaues);
-        this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
+        try {
+            // adding component to filterCriteriaList list
+            let filterVlaues = {};
+            filterVlaues.id = this.trackFielterId;
+            this.trackFielterId++;
+            filterVlaues.resource = this.resourceValue;
+            filterVlaues.operator = this.operatorValue;
+            filterVlaues.resourceName = this.resourceName;
+            filterVlaues.operatorName = this.operatorName;
+            filterVlaues.value = this.userInputSearchValue;
+            this.filterCriteriaList.push(filterVlaues);
+            this.handlefilterCriteriaListChange(); // will pass filterCriteriaList value to parent
+
+        } catch (error) {
+            console.log('error in add  filter:', error);
+        }
+
     }
 
     onRemoveAll() // onclick Button
@@ -185,10 +191,16 @@ export default class Filter extends LightningElement {
 
     handlefilterCriteriaListChange() {
         // Creates the event with the data.
-        const selectedEvent = new CustomEvent("filtercriteriachange", {
-            detail: this.filterCriteriaList
-        });
-        this.dispatchEvent(selectedEvent);
-        console.log('handlefilterCriteriaListChange Dispatches the event');
+        try {
+            const selectedEvent = new CustomEvent("filtercriteriachange", {
+                detail: this.filterCriteriaList
+            });
+            this.dispatchEvent(selectedEvent);
+            console.log('handlefilterCriteriaListChange Dispatches the event');
+        } catch (error) {
+            console.log('handlefilterCriteriaListChange' + error);
+
+        }
+
     }
 }
