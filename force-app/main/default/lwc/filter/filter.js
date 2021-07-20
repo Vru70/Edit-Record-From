@@ -19,6 +19,7 @@ export default class Filter extends LightningElement {
     isValueDisabled = true;
 
     trackFielterId = 0;
+    isDate = false;
 
     // operatorOptions
     operatorOption = []; // Actualy return by get method
@@ -41,9 +42,12 @@ export default class Filter extends LightningElement {
     ];
 
     dateOption = [
-        { label: 'all time', value: 'allTime' },
-        { label: 'custom', value: 'custom' }
-
+        { label: 'equals', value: 'equals' },
+        { label: 'not equals', value: 'notEquals' },
+        { label: 'less than', value: 'lessThan' },
+        { label: 'greater than', value: 'greaterThan' },
+        { label: 'less or equal', value: 'lessOrEqual' },
+        { label: 'greater or equal', value: 'greaterOrEqual' }
     ];
 
     get resourceOptions() { //Resource == DataTable Column values
@@ -58,21 +62,25 @@ export default class Filter extends LightningElement {
             case 'picklist':
             case 'phone':
                 this.operatorOption = this.stringOption;
+                this.isDate = false;
                 break;
 
             case 'currency':
             case 'double':
                 this.operatorOption = this.doubleOption;
+                this.isDate = false;
                 break;
 
             case 'datetime':
                 this.operatorOption = this.dateOption;
+                this.isDate = true;
                 break;
             case 'time':
                 this.operatorOption = this.dateOption;
                 break;
             case 'date':
                 this.operatorOption = this.dateOption;
+                this.isDate = true;
                 break;
 
             default:
