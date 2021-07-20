@@ -37,9 +37,14 @@
                                             disabled={isOperatorDisabled}>
                                         </lightning-combobox>
                                     </div>
-                                    <div class="slds-col">
+                                    <div if:false={isDate} class="slds-col">
                                         <lightning-input type="string" variant="standard" name="Value"
                                             disabled={isValueDisabled} label="Value" onchange={onChangeInputValue}>
+                                        </lightning-input>
+                                    </div>
+                                    <div if:true={isDate} class="slds-col">
+                                        <lightning-input type="date" variant="standard" name="Value" disabled={isValueDisabled} label="Value"
+                                            onchange={onChangeInputValue}>
                                         </lightning-input>
                                     </div>
                                     <div class="slds-col slds-grid slds-gutters slds-var-p-top_small">
