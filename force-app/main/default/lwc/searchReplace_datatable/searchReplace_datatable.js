@@ -35,6 +35,7 @@ export default class SearchReplace_datatable extends LightningElement {
     @track filterState = false;
 
     fieldnames = []; // list of field names
+    takeActionConVal; // from child 
 
     connectedCallback() {
         getFieldsAndRecords({
@@ -209,11 +210,17 @@ export default class SearchReplace_datatable extends LightningElement {
         let searchString = this.searchKey;
         let allRecords = this.allDataOrgCopy;
         let searchResults = [];
-        let fieldDataType = this.fieldType;
+        let fieldDataType = this.fieldType; //
         if (fieldDataType == 'double' || fieldDataType == "double") {
             searchResults = allRecords.filter(key => key[this.fieldOption] == parseInt(searchString));
         } else {
-            searchResults = allRecords.filter(key => key[this.fieldOption].includes(searchString));
+            searchResults = allRecords.filter(key => {
+                let val = key[this.fieldOption];
+                if (String(val).indexOf(searchString) != -1) {
+                    return true;
+                }
+
+            });
         }
         this.allData = searchResults;
     }
@@ -256,90 +263,184 @@ export default class SearchReplace_datatable extends LightningElement {
             allRecords = this.allDataOrgCopy;
         }
 
-        filterCriteriaList.forEach(filterCriteria => {
-            switch (filterCriteria.operator) {
-                case 'lessThan':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource] < filterCriteria.value);
-                    this.allData = filterResults;
-                    break;
+        if (this.takeActionConVal == 'AND') {
+            filterCriteriaList.forEach(filterCriteria => {
+                switch (filterCriteria.operator) {
+                    case 'lessThan':
+                        allRecords = this.allDatac;
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] < filterCriteria.value);
+                        this.allData = filterResults;
+                        break;
 
-                case 'greaterThan':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource] > filterCriteria.value);
-                    this.allData = filterResults;
-                    break;
+                    case 'greaterThan':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] > filterCriteria.value);
+                        this.allData = filterResults;
+                        break;
 
-                case 'lessOrEqual':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource] <= filterCriteria.value);
-                    this.allData = filterResults;
-                    break;
+                    case 'lessOrEqual':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] <= filterCriteria.value);
+                        this.allData = filterResults;
+                        break;
 
-                case 'greaterOrEqual':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource] >= filterCriteria.value);
-                    this.allData = filterResults;
-                    break;
+                    case 'greaterOrEqual':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] >= filterCriteria.value);
+                        this.allData = filterResults;
+                        break;
 
-                case 'equals':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
-                    this.allData = filterResults;
-                    break;
+                    case 'equals':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
+                        this.allData = filterResults;
+                        break;
 
-                case 'notEquals':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => key[filterCriteria.resource] != filterCriteria.value);
-                    this.allData = filterResults;
-                    break;
+                    case 'notEquals':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] != filterCriteria.value);
+                        this.allData = filterResults;
+                        break;
 
-                case 'endsWith':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => {
-                        let val = key[filterCriteria.resource];
-                        String(val).endsWith(filterCriteria.value);
-                    });
-                    this.allData = filterResults;
-                    break;
+                    case 'endsWith':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => {
+                            let val = key[filterCriteria.resource];
+                            String(val).endsWith(filterCriteria.value);
+                        });
+                        this.allData = filterResults;
+                        break;
 
-                case 'startsWith':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => {
-                        let val = key[filterCriteria.resource];
-                        String(val).startsWith(filterCriteria.value);
-                    });
-                    this.allData = filterResults;
-                    break;
+                    case 'startsWith':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => {
+                            let val = key[filterCriteria.resource];
+                            String(val).startsWith(filterCriteria.value);
+                        });
+                        this.allData = filterResults;
+                        break;
 
-                case 'empty':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => {
-                        key[filterCriteria.resource] == 'undefined' ||
-                            key[filterCriteria.resource] == null ||
-                            key[filterCriteria.resource] == '' ||
-                            key[filterCriteria.resource].length <= 0;
+                    case 'empty':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => {
+                            key[filterCriteria.resource] == 'undefined' ||
+                                key[filterCriteria.resource] == null ||
+                                key[filterCriteria.resource] == '' ||
+                                key[filterCriteria.resource].length <= 0;
 
-                    });
-                    this.allData = filterResults;
-                    break;
+                        });
+                        this.allData = filterResults;
+                        break;
 
-                case 'contains':
-                    allRecords = this.allData;
-                    filterResults = allRecords.filter(key => {
-                        let val = key[filterCriteria.resource];
-                        if (String(val).indexOf(filterCriteria.value) != -1) {
-                            return true;
-                        }
-                    });
-                    this.allData = filterResults;
-                    break;
+                    case 'contains':
+                        allRecords = this.allData;
+                        filterResults = allRecords.filter(key => {
+                            let val = key[filterCriteria.resource];
+                            if (String(val).indexOf(filterCriteria.value) != -1) {
+                                return true;
+                            }
+                        });
+                        this.allData = filterResults;
+                        break;
 
-                default:
-                    break;
-            }
+                    default:
+                        break;
+                }
 
-        });
+            });
+        } else if (this.takeActionConVal == 'OR') {
+            var collectorData = [];
+            allRecords = this.allDataOrgCopy;
+            filterCriteriaList.forEach(filterCriteria => {
+                switch (filterCriteria.operator) {
+                    case 'lessThan':
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] < filterCriteria.value);
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'greaterThan':
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] > filterCriteria.value);
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'lessOrEqual':
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] <= filterCriteria.value);
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'greaterOrEqual':
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] >= filterCriteria.value);
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'equals':
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'notEquals':
+                        filterResults = allRecords.filter(key => key[filterCriteria.resource] != filterCriteria.value);
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'endsWith':
+                        filterResults = allRecords.filter(key => {
+                            let val = key[filterCriteria.resource];
+                            String(val).endsWith(filterCriteria.value);
+                        });
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'startsWith':
+                        filterResults = allRecords.filter(key => {
+                            let val = key[filterCriteria.resource];
+                            String(val).startsWith(filterCriteria.value);
+                        });
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'empty':
+                        filterResults = allRecords.filter(key => {
+                            key[filterCriteria.resource] == 'undefined' ||
+                                key[filterCriteria.resource] == null ||
+                                key[filterCriteria.resource] == '' ||
+                                key[filterCriteria.resource].length <= 0;
+
+                        });
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    case 'contains':
+                        filterResults = allRecords.filter(key => {
+                            let val = key[filterCriteria.resource];
+                            if (String(val).indexOf(filterCriteria.value) != -1) {
+                                return true;
+                            }
+                        });
+                        collectorData = collectorData.concat(filterResults);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                // duplicate removal logic
+                var jsonObject = collectorData.map(JSON.stringify);
+                var uniqueSet = new Set(jsonObject);
+                console.log('uniqueSet  ' + JSON.stringify(uniqueSet));
+                this.allData = uniqueSet;
+                console.log('this.allData OR:', JSON.parse(JSON.stringify(this.allData)));
+            });
+
+        }
+
+
+
+    }
+
+    takeactionChnage(event) {
+        this.takeActionConVal = JSON.parse(JSON.stringify(event.detail));
+        console.log('takeActionConVal:', this.takeActionConVal);
     }
 
 }
