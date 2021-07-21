@@ -53,6 +53,12 @@ export default class Filter extends LightningElement {
     get resourceOptions() { //Resource == DataTable Column values
         return this.filedsList;
     }
+    get takeActionOption() { // for and or combo
+        return [
+            { label: 'All AND', value: 'AND' },
+            { label: 'All OR', value: 'OR' },
+        ];
+    }
 
     get operatorOptions() { //Operator eg, Starts With , end with , lessthan  etc
         switch (this.valueType) {
@@ -190,6 +196,21 @@ export default class Filter extends LightningElement {
     }
 
     disableBoxOpt() {
+
+    }
+
+    onTakeAction(event) { // AND OR DATA 
+        var condi = event.target.value;
+        try {
+            const newEvents = new CustomEvent("takeactionchnage", {
+                detail: condi
+            });
+            this.dispatchEvent(newEvents);
+            console.log('onTakeAction Dispatches the event');
+        } catch (error) {
+            console.log('onTakeAction' + error);
+
+        }
 
     }
 
