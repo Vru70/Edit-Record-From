@@ -3,7 +3,6 @@
         <lightning-button-icon-stateful icon-name="utility:filterList" selected={filterState} onclick={handleFilter}
             alternative-text="Filter">
         </lightning-button-icon-stateful>
-
         <div if:true={filterState} style="position: relative;">
             <section class="slds-popover slds-popover_medium slds-popover_prompt_top-right slds-nubbin_top-right"
                 role="dialog">
@@ -47,16 +46,17 @@
                                             disabled={isValueDisabled} label="Value" onchange={onChangeInputValue}>
                                         </lightning-input>
                                     </div>
-                                    <div class="slds-col slds-grid slds-gutters slds-var-p-top_small">
+                                    <div
+                                        class="slds-col slds-grid slds-gutters slds-var-p-top_small slds-p-bottom_x-small">
                                         <div class="slds-col slds-align_absolute-center">
-                                            <lightning-button variant="neutral" label="Add Filter"
-                                                onclick={onAddFilter}></lightning-button>
+                                            <lightning-button variant="neutral" label="Add" onclick={onAddFilter}>
+                                            </lightning-button>
                                         </div>
-                                        <div class="slds-col slds-align_absolute-center">
-                                            <lightning-button variant="destructive-text" label="Remove All"
+                                        <div class="slds-col slds-align_absolute-center slds-p-bottom_xx-small">
+                                            <lightning-button variant="destructive-text" label="Remove"
                                                 onclick={onRemoveAll}></lightning-button>
                                         </div>
-                                        <div class="slds-col slds-align_absolute-center">
+                                        <div class="slds-col slds-align_absolute-center slds-p-bottom_large">
                                             <lightning-combobox placeholder="Action" options={takeActionOption}
                                                 onchange={onTakeAction}>
                                             </lightning-combobox>
