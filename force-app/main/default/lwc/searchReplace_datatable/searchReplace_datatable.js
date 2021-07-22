@@ -455,8 +455,6 @@ export default class SearchReplace_datatable extends LightningElement {
 
         }
 
-
-
     }
 
     takeactionChnage(event) {

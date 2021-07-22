@@ -17,6 +17,7 @@ export default class Filter extends LightningElement {
 
     isOperatorDisabled = true;
     isValueDisabled = true;
+    @track actionVal = 'AND';
 
     trackFielterId = 0;
     isDate = false;
@@ -201,6 +202,7 @@ export default class Filter extends LightningElement {
 
     onTakeAction(event) { // AND OR DATA 
         var condi = event.target.value;
+        this.actionVal = event.target.value;
         try {
             const newEvents = new CustomEvent("takeactionchnage", {
                 detail: condi
