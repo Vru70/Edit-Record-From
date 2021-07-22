@@ -227,7 +227,7 @@ export default class SearchReplace_datatable extends LightningElement {
 
     handleKeyChange(event) {
         this.searchKey = event.target.value;
-        if (this.searchKey !== null) {
+        if (this.searchKey !== null || this.takeActionConVal !== null) {
             this.isSearchFlag = true;
             this.searchDataTable();
         }
@@ -257,6 +257,7 @@ export default class SearchReplace_datatable extends LightningElement {
         var filterCriteriaList = (JSON.parse(JSON.stringify(event.detail)));
         console.table(JSON.parse(JSON.stringify(filterCriteriaList)));
         var allRecords = [];
+        allRecords = this.allData;
         var filterResults = [];
         if (filterCriteriaList.length == 0) {
             this.allData = this.allDataOrgCopy;
@@ -267,7 +268,7 @@ export default class SearchReplace_datatable extends LightningElement {
             filterCriteriaList.forEach(filterCriteria => {
                 switch (filterCriteria.operator) {
                     case 'lessThan':
-                        allRecords = this.allDatac;
+                        allRecords = this.allData;
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] < filterCriteria.value);
                         this.allData = filterResults;
                         break;
@@ -355,32 +356,44 @@ export default class SearchReplace_datatable extends LightningElement {
                 switch (filterCriteria.operator) {
                     case 'lessThan':
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] < filterCriteria.value);
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'greaterThan':
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] > filterCriteria.value);
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'lessOrEqual':
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] <= filterCriteria.value);
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'greaterOrEqual':
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] >= filterCriteria.value);
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'equals':
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] == filterCriteria.value);
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'notEquals':
                         filterResults = allRecords.filter(key => key[filterCriteria.resource] != filterCriteria.value);
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'endsWith':
@@ -388,7 +401,9 @@ export default class SearchReplace_datatable extends LightningElement {
                             let val = key[filterCriteria.resource];
                             String(val).endsWith(filterCriteria.value);
                         });
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'startsWith':
@@ -396,7 +411,9 @@ export default class SearchReplace_datatable extends LightningElement {
                             let val = key[filterCriteria.resource];
                             String(val).startsWith(filterCriteria.value);
                         });
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'empty':
@@ -407,7 +424,9 @@ export default class SearchReplace_datatable extends LightningElement {
                                 key[filterCriteria.resource].length <= 0;
 
                         });
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(key => {
+                            collectorData.push(key);
+                        });
                         break;
 
                     case 'contains':
@@ -417,18 +436,20 @@ export default class SearchReplace_datatable extends LightningElement {
                                 return true;
                             }
                         });
-                        collectorData = collectorData.concat(filterResults);
+                        filterResults.forEach(vv => {
+                            collectorData.push(vv);
+                        });
+                        console.log('collectorData:', JSON.stringify(collectorData));
                         break;
 
                     default:
                         break;
                 }
 
-                // duplicate removal logic
-                var jsonObject = collectorData.map(JSON.stringify);
-                var uniqueSet = new Set(jsonObject);
-                console.log('uniqueSet  ' + JSON.stringify(uniqueSet));
-                this.allData = uniqueSet;
+                // duplicate removal logic 
+                const uniqueSet = new Set(collectorData);
+
+                this.allData = [...uniqueSet];
                 console.log('this.allData OR:', JSON.parse(JSON.stringify(this.allData)));
             });
 
