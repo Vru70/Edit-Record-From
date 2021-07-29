@@ -1,6 +1,6 @@
 /**
  * @author            : Vrushabh Uprikar
- * @last modified on  : 07-01-2021
+ * @last modified on  : 29-07-2021
  * @last modified by  : Vrushabh Uprikar
  * Modifications Log 
  * Ver   Date         Author             Modification
@@ -35,7 +35,7 @@ export default class SearchReplace_datatable extends LightningElement {
     @track filterState = false;
 
     fieldnames = []; // list of field names
-    takeActionConVal; // from child 
+    takeActionConVal = 'AND'; // from child 
 
     connectedCallback() {
         getFieldsAndRecords({
